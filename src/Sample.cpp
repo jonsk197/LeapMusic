@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <string.h>
-#include "Leap.h"
+#include "../include/Leap.h"
 
 using namespace Leap;
 
