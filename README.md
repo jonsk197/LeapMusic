@@ -32,6 +32,10 @@ If you don't want to compile the project with make you can specify the type of p
 
 Interaction
 ===========
-1. Open and closed hand to activate the menu.
-2. Absolute position of the palm of the hand. This is the position used to modify the tone and also to navigate menus.
-3. The positioning of the fingers. Pressing the index finger against the thumb records a tone.
+1. An open hand indicates idleness, nothing happens.
+
+2. A closed hand activates the context menu. This happens when the middle bone of the four fingers excluding the thumb has the opposite direction of respective metacorpal bone.
+
+2. Absolute position of the palm of the hand. This is the position used to modify the tone and also to navigate menus. This information is trivially retrieved from the SDK.
+
+3. The positioning of the fingers. Pressing the index finger against the thumb records a tone. Two fingers touch when the end position of their distal bones are about equal.
