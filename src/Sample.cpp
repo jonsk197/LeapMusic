@@ -91,6 +91,8 @@ void SampleListener::onFrame(const Controller& controller) {
 		bool fingersClosed[] = {true, false, false, false, false};
     // Get fingers
     const FingerList fingers = hand.fingers();
+		// The coordinates of the top of the thumb and index fingers.
+		Vector indexPoint, thumbPoint;
     for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
       const Finger finger = *fl;
       std::cout << std::string(4, ' ') <<  fingerNames[finger.type()]
@@ -107,14 +109,21 @@ void SampleListener::onFrame(const Controller& controller) {
                   << ", end: " << bone.nextJoint()
                   << ", direction: " << bone.direction() << std::endl;
       }
+
+			// Figure out some specific hand positions.
 			if(finger.type() != Finger::TYPE_THUMB){
 				Vector metacarpalDirection = finger.bone(Bone::TYPE_METACARPAL).direction();
 				Vector intermediateDirection = finger.bone(Bone::TYPE_INTERMEDIATE).direction();
-				if(! Matte::fuzzyEquals(metacarpalDirection, intermediateDirection, 1.7)){
+				if(! Matte::fuzzyAngleEquals(metacarpalDirection, intermediateDirection, 1.7)){
 					std::cout << "Finger closed. ";
 					fingersClosed[finger.type()] = true;
 				}
+				if(finger.type() == Finger::TYPE_INDEX)
+					indexPoint = finger.bone(Bone::TYPE_DISTAL).nextJoint();
 			}
+			else
+				thumbPoint = finger.bone(Bone::TYPE_DISTAL).nextJoint();
+
     }
 
 		// Check if all the positions in the array are set to true
@@ -128,6 +137,9 @@ void SampleListener::onFrame(const Controller& controller) {
 
 		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120)
 			std::cout << "Opening menu.";
+
+		if( Matte::fuzzyEquals(indexPoint, thumbPoint, 5))
+			std::cout << "Index finger and thumb touching";
   }
 
   // Get tools
