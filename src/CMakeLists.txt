@@ -1,4 +1,6 @@
 add_executable (Sample Sample.cpp)
+add_library (Matte Matte.cpp Matte.h)
+target_link_libraries (Sample Matte)
 
 if(APPLE)
 	target_link_libraries (Sample ${Leap_lib}/libLeap.dylib)
