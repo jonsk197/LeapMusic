@@ -32,9 +32,9 @@ If you don't want to compile the project with make you can specify the type of p
 
 Interaction
 ===========
-1. An open hand indicates idleness, nothing happens.
+1. An open hand with the palm facing downwards indicates idleness, nothing happens.
 
-2. A closed hand activates the context menu. This happens when the middle bone of the four fingers excluding the thumb has the opposite direction of respective metacorpal bone.
+2. A hand turned up side down opens the context menu.
 
 2. Absolute position of the palm of the hand. This is the position used to modify the tone and also to navigate menus. This information is trivially retrieved from the SDK.
 
