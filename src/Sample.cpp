@@ -9,6 +9,9 @@
 #include <iostream>
 #include <string.h>
 #include "../include/Leap.h"
+#include "Matte.h"
+#include <algorithm>
+#include <cmath>
 
 using namespace Leap;
 
@@ -29,7 +32,7 @@ class SampleListener : public Listener {
 };
 
 const std::string fingerNames[] = {"Thumb", "Index", "Middle", "Ring", "Pinky"};
-const std::string boneNames[] = {"Metacarpal", "Proximal", "Middle", "Distal"};
+const std::string boneNames[] = {"Metacarpal", "Proximal", "Intermediate", "Distal"};
 const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE", "STATE_END"};
 
 void SampleListener::onInit(const Controller& controller) {
@@ -85,6 +88,7 @@ void SampleListener::onFrame(const Controller& controller) {
               << " wrist position: " << arm.wristPosition()
               << " elbow position: " << arm.elbowPosition() << std::endl;
 
+		bool fingersClosed[] = {true, false, false, false, false};
     // Get fingers
     const FingerList fingers = hand.fingers();
     for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
@@ -103,7 +107,27 @@ void SampleListener::onFrame(const Controller& controller) {
                   << ", end: " << bone.nextJoint()
                   << ", direction: " << bone.direction() << std::endl;
       }
+			if(finger.type() != Finger::TYPE_THUMB){
+				Vector metacarpalDirection = finger.bone(Bone::TYPE_METACARPAL).direction();
+				Vector intermediateDirection = finger.bone(Bone::TYPE_INTERMEDIATE).direction();
+				if(! Matte::fuzzyEquals(metacarpalDirection, intermediateDirection, 1.7)){
+					std::cout << "Finger closed. ";
+					fingersClosed[finger.type()] = true;
+				}
+			}
     }
+
+		// Check if all the positions in the array are set to true
+		if (std::all_of(std::begin(fingersClosed),
+										std::end(fingersClosed),
+										[](bool b){
+											return b;
+										})) {
+			std::cout << "The hand is closed.";
+    }
+
+		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120)
+			std::cout << "Opening menu.";
   }
 
   // Get tools
