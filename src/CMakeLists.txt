@@ -1,4 +1,4 @@
-add_executable (Sample Sample.cpp)
+add_executable (Sample Sample.cpp Menu.cpp Menu.h)  
 add_library (Matte Matte.cpp Matte.h)
 target_link_libraries (Sample Matte)
 

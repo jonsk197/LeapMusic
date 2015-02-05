@@ -12,6 +12,7 @@
 #include "Matte.h"
 #include <algorithm>
 #include <cmath>
+#include "Menu.h"
 
 using namespace Leap;
 
@@ -34,6 +35,7 @@ class SampleListener : public Listener {
 const std::string fingerNames[] = {"Thumb", "Index", "Middle", "Ring", "Pinky"};
 const std::string boneNames[] = {"Metacarpal", "Proximal", "Intermediate", "Distal"};
 const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE", "STATE_END"};
+Menu menu;
 
 void SampleListener::onInit(const Controller& controller) {
   std::cout << "Initialized" << std::endl;
@@ -135,9 +137,16 @@ void SampleListener::onFrame(const Controller& controller) {
 			std::cout << "The hand is closed.";
     }
 
-		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120)
-			std::cout << "Opening menu.";
-
+      if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
+            
+            if(menu.isOpen){
+                menu.open(hand.palmPosition());
+            }
+      
+            menu.updateMenu(hand.palmNormal());
+      
+      }
+      
 		if( Matte::fuzzyEquals(indexPoint, thumbPoint, 5))
 			std::cout << "Index finger and thumb touching";
   }
