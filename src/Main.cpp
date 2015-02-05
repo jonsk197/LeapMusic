@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
 #include "../include/Leap.h"
-#include "Listener.h"
+#include "LeapListener.h"
 #include "Matte.h"
 #include <algorithm>
 #include <cmath>
@@ -10,7 +10,8 @@ using namespace Leap;
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
-	SampleListener listener;
+	Menu menu;
+	LeapListener listener(menu);
 	Controller controller;
 
 	// Have the sample listener receive events from the controller

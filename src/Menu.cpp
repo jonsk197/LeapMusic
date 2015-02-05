@@ -2,23 +2,13 @@
 #include "Menu.h"
 #include <cmath>
 
-using namespace Leap;
-
-bool isOpen = false;
-Vector menuCenter;
-int menuSize = 50;
-
-
-void Menu::open(Vector startPosition){
+void Menu::open(Leap::Vector startPosition){
     menuCenter = startPosition;
-    
 }
 
-void Menu::updateMenu(Vector handPosition){
+void Menu::updateMenu(Leap::Vector handPosition){
 
-    if(abs(menuCenter - handPosition) > menuSize){
+    if(menuCenter.distanceTo(handPosition) > menuSize){
     //do stuff when menuitem is selected
     }
 }
-
-
