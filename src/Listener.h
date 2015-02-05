@@ -1,4 +1,5 @@
 #include "../include/Leap.h"
+#include <string.h>
 
 using namespace Leap;
 
