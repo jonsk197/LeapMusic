@@ -1,39 +1,8 @@
-/******************************************************************************\
-* Copyright (C) 2012-2014 Leap Motion, Inc. All rights reserved.               *
-* Leap Motion proprietary and confidential. Not for distribution.              *
-* Use subject to the terms of the Leap Motion SDK Agreement available at       *
-* https://developer.leapmotion.com/sdk_agreement, or another agreement         *
-* between Leap Motion and you, your company or other organization.             *
-\******************************************************************************/
-
-#include <iostream>
-#include <string.h>
+#include "Listener.h"
 #include "../include/Leap.h"
 #include "Matte.h"
-#include <algorithm>
-#include <cmath>
 
 using namespace Leap;
-
-class SampleListener : public Listener {
-  public:
-    virtual void onInit(const Controller&);
-    virtual void onConnect(const Controller&);
-    virtual void onDisconnect(const Controller&);
-    virtual void onExit(const Controller&);
-    virtual void onFrame(const Controller&);
-    virtual void onFocusGained(const Controller&);
-    virtual void onFocusLost(const Controller&);
-    virtual void onDeviceChange(const Controller&);
-    virtual void onServiceConnect(const Controller&);
-    virtual void onServiceDisconnect(const Controller&);
-
-  private:
-};
-
-const std::string fingerNames[] = {"Thumb", "Index", "Middle", "Ring", "Pinky"};
-const std::string boneNames[] = {"Metacarpal", "Proximal", "Intermediate", "Distal"};
-const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE", "STATE_END"};
 
 void SampleListener::onInit(const Controller& controller) {
   std::cout << "Initialized" << std::endl;
@@ -248,25 +217,4 @@ void SampleListener::onServiceConnect(const Controller& controller) {
 
 void SampleListener::onServiceDisconnect(const Controller& controller) {
   std::cout << "Service Disconnected" << std::endl;
-}
-
-int main(int argc, char** argv) {
-  // Create a sample listener and controller
-  SampleListener listener;
-  Controller controller;
-
-  // Have the sample listener receive events from the controller
-  controller.addListener(listener);
-
-  if (argc > 1 && strcmp(argv[1], "--bg") == 0)
-    controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
-
-  // Keep this process running until Enter is pressed
-  std::cout << "Press Enter to quit..." << std::endl;
-  std::cin.get();
-
-  // Remove the sample listener when done
-  controller.removeListener(listener);
-
-  return 0;
 }
