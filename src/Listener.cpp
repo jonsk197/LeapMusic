@@ -1,6 +1,9 @@
 #include "Listener.h"
 #include "../include/Leap.h"
 #include "Matte.h"
+#include <algorithm>
+#include <cmath>
+#include "Menu.h"
 
 using namespace Leap;
 
@@ -104,9 +107,16 @@ void SampleListener::onFrame(const Controller& controller) {
 			std::cout << "The hand is closed.";
     }
 
-		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120)
-			std::cout << "Opening menu.";
-
+      if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
+            
+            if(menu.isOpen){
+                menu.open(hand.palmPosition());
+            }
+      
+            menu.updateMenu(hand.palmNormal());
+      
+      }
+      
 		if( Matte::fuzzyEquals(indexPoint, thumbPoint, 5))
 			std::cout << "Index finger and thumb touching";
   }

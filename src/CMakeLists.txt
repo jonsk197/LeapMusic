@@ -1,4 +1,4 @@
-add_executable (LeapMusic Main.cpp Listener.cpp)
+add_executable (LeapMusic Main.cpp Listener.cpp Menu.cpp)
 add_library (Matte Matte.cpp Matte.h)
 target_link_libraries (LeapMusic Matte)
 
