@@ -4,6 +4,7 @@ target_link_libraries (LeapMusic Matte)
 
 if(APPLE)
 	target_link_libraries (LeapMusic ${Leap_lib}/libLeap.dylib)
+	set (DYLD_LIBRARY_PATH ${DYLD_LIBRARY_PATH}:${Leap_lib}/libLeap.dylib)
 elseif(WIN32)
 	if (${arch} STREQUAL "i386")
 		target_link_libraries (LeapMusic ${Leap_lib}/x86/libLeap.dll)
