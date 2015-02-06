@@ -12,11 +12,21 @@ git clone <repo url>
 cd leapMusic
 ```
 
-Download the Leap SDK and copy or link the folder named LeapSDK into the project directory:
+Download the [Leap SDK](https://developer.leapmotion.com/) and move, copy or link the folder named LeapSDK into the project directory, the following example is of symlinking:
 
 ```bash
 ln -s ~/Path/To/SDK/LeapSDK ./
 
+```
+
+Then install the PortAudio library. On Ubuntu and other Debian derivatives it's:
+
+```bash
+sudo apt-get install libportaudio-dev
+```
+On MacOSX with homebrew it's:
+```bash
+brew install portaudio
 ```
 
 Now you're ready to build the project:
