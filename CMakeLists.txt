@@ -13,8 +13,6 @@ target_architecture (arch)
 message (STATUS "Architecture is ${arch}")
 
 set (Leap_lib ${CMAKE_SOURCE_DIR}/LeapSDK/lib)
-set (PortAudio_lib ${CMAKE_SOURCE_DIR}/portaudio/lib/.libs/)
-
 find_package(PortAudio)
 
 add_subdirectory (src)
