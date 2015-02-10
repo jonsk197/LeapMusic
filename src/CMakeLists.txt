@@ -1,5 +1,5 @@
-add_executable (LeapMusic Main.cpp LeapListener.cpp Menu.cpp)
-add_library (Matte Matte.cpp Matte.h)
+add_executable (LeapMusic Main.cpp LeapListener.cpp Menu.cpp Sound.cpp)
+add_library (Matte Matte.cpp)
 target_link_libraries (LeapMusic Matte)
 
 if(APPLE)
