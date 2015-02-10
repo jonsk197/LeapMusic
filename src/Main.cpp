@@ -1,10 +1,14 @@
 #include <iostream>
 #include <string.h>
+#include <algorithm>
+#include <cmath>
+
 #include "../include/Leap.h"
 #include "LeapListener.h"
 #include "Matte.h"
-#include <algorithm>
-#include <cmath>
+#include "Sound.h"
+
+
 
 using namespace Leap;
 
@@ -13,6 +17,7 @@ int main(int argc, char** argv) {
 	Menu menu;
 	LeapListener listener(menu);
 	Controller controller;
+	Sound sound;
 
 	// Have the sample listener receive events from the controller
 	controller.addListener(listener);

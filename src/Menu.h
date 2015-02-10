@@ -2,6 +2,8 @@
 #define MENU
 #include "../include/Leap.h"
 
+
+
 class Menu{
  public:
 	void open(Leap::Vector startPosition);
