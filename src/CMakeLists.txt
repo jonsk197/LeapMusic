@@ -1,7 +1,9 @@
 add_executable (LeapMusic Main.cpp LeapListener.cpp Menu.cpp Sound.cpp)
 add_library (Matte Matte.cpp)
-target_link_libraries (LeapMusic Matte)
+target_link_libraries (LeapMusic Matte ${PORTAUDIO_LIBRARIES})
 
+
+# The following ugly piece of code exists because I couldn't get FindLeap.cmake to work.
 if(APPLE)
 	target_link_libraries (LeapMusic ${Leap_lib}/libLeap.dylib)
 elseif(WIN32)

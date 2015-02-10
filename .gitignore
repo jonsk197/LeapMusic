@@ -1,7 +1,8 @@
 # -*- mode: gitignore; -*-
 
-# Build directory
+# Build directory and LeapSDK
 build/
+LeapSDK
 
 # Cmake temp files
 CMakeCache.txt
