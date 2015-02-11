@@ -9,7 +9,22 @@
 #include "Entry.h"
 #include "string"
 
-struct Enrty{
-	std::string title;
-	bool selected;
-};
+
+
+void Entry::setTitle(std::string str){
+	title = str;
+}
+
+std::string Entry::getTitle(){
+	return title;
+}
+
+void Entry::select(){
+	selected = true;
+}
+
+
+void Entry::deSelect(){
+	selected = false;
+}
+

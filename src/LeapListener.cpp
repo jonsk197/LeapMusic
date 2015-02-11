@@ -112,20 +112,13 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-
-            
-						if(menu.isOpen){
-                            menu.updateMenu(hand.palmNormal());
-                        }else{
-                            menu.open(hand.palmPosition());
-                        }
-
-                std::cout << ("You are in menu!!!!!!!!!!!!!!!!!!");
+				menu.isOpen = true;
+				std::cout << ("!!!!!!!!!!!!!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
         
             if(abs(hand.palmNormal().roll() * RAD_TO_DEG) < 120){
-                menu.close();
-                std::cout << ("You closing the menu############################");
+				menu.isOpen = false;
+				std::cout << ("#########################Menu is closed###########################");
             }
 
 		if( Matte::fuzzyEquals(indexPoint, thumbPoint, 5))

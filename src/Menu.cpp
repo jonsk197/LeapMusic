@@ -3,19 +3,25 @@
 #include <cmath>
 #include <iostream>
 
-void Menu::open(Leap::Vector startPosition){
-	menuCenter = startPosition;
+void Menu::openOrUpdateMenu(Leap::Vector handPosition){
+	
+	if (!isOpen) {
+		menuCenter = handPosition;
+	}
 	isOpen = true;
 	
-}
-
-void Menu::updateMenu(Leap::Vector handPosition){
-	
 	if(menuCenter.distanceTo(handPosition) > menuSize){
-    //do stuff when menuitem is selected
+		float angel = handPosition.angleTo(Leap::Vector (0,1,0));
+		float angelOfSector = fmod(2*M_PI,nrOfEntries);
+		float sector = fmodf(angel, angelOfSector);
+		
+		//Need to fix this vector.
+		//entries.at(sector).select();
+		
 	}
 }
 
-void Menu::close(){
-	isOpen = false;
+bool Menu::isMenuOpen(){
+	return isOpen;
 }
+

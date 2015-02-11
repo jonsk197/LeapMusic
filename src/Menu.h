@@ -3,12 +3,15 @@
 #define MENU
 #include "../include/Leap.h"
 
+using namespace Leap;
+
 class Menu{
  public:
-	void open(Leap::Vector startPosition);
-	void updateMenu(Leap::Vector handPosition);
-	void close();
-	bool isOpen;
+	void openOrUpdateMenu(Leap::Vector handPosition);
+	bool isMenuOpen();
+	Vector<Entry> entries;
+	float nrOfEntries = 6;
+	bool isOpen = false;
 
  private:
 	Leap::Vector menuCenter;
