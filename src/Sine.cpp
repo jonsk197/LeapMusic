@@ -1,13 +1,14 @@
 #include <assert.h>
+#include <cmath>
+
 #include "Sine.h"
 
-Sine::Sine(int tableSize) : tableSize_(tableSize), leftPhase_(0), rightPhase_(0)
+Sine::Sine(int tableSize) :
+	tableSize_(tableSize), leftPhase_(0), rightPhase_(0)
 {
-  const double PI = 3.14159265;
   table_ = new float[tableSize];
-  for (int i = 0; i < tableSize; ++i)
-    {
-      table_[i] = 0.125f * (float)sin(((double)i/(double)tableSize)*PI*2.);
+  for (int i = 0; i < tableSize; ++i) {
+      table_[i] = 0.25f * (float)sin(((double)i/(double)tableSize)*M_PI*2.);
     }
 }
 

@@ -16,8 +16,9 @@ class Sound{
 	Sound();
 
  private:
-	static constexpr double SAMPLE_RATE = 16000.0f;
-	static const int FRAMES_PER_BUFFER = 64;
+	static constexpr double SAMPLE_RATE = 44100.0f;
+  static const int FRAMES_PER_BUFFER = 64;
+  portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
 };

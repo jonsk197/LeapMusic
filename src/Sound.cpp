@@ -12,12 +12,17 @@ Sound::Sound(){
 
 
 void Sound::playSine(double length, double frequency){
-	Sine sine(200);
+	Sine sine(100);
 
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
-							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
+							 outParamsBeep, SAMPLE_RATE, 1,
 							 paClipOff);
 	portaudio::MemFunCallbackStream<Sine>
 		streamBeep(paramsBeep, sine, &Sine::generate);
+
+	streamBeep.start();
+	sys.sleep(length * 1000);
+	streamBeep.stop();
+	streamBeep.close();
 }
