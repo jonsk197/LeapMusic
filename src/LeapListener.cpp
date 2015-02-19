@@ -1,9 +1,11 @@
+#include <algorithm>
+#include <cmath>
+
 #include "LeapListener.h"
 #include "../include/Leap.h"
 #include "Matte.h"
-#include <algorithm>
-#include <cmath>
 #include "Menu.h"
+#include "Sound.h"
 
 using namespace Leap;
 
@@ -112,12 +114,14 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-				menu.isOpen = true;
+				menu.isOpen = true;			
+				menu.openOrUpdateMenu(hand.palmPosition());
 				std::cout << ("!!!!!!!!!!!!!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
         
             if(abs(hand.palmNormal().roll() * RAD_TO_DEG) < 120){
 				menu.isOpen = false;
+				menu.openOrUpdateMenu(hand.palmPosition());
 				std::cout << ("#########################Menu is closed###########################");
             }
 

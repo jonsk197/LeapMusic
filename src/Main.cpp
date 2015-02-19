@@ -7,16 +7,10 @@
 #include "LeapListener.h"
 #include "Matte.h"
 #include "EventHandler.h"
-#include <algorithm>
-#include <cmath>
-#include <thread>
+#include "Sound.h"
 
 
 using namespace Leap;
-
-void event_thread(Menu& menu) {
-	EventHandler::checkForEvent(menu);
-}
 
 
 int main(int argc, char** argv) {
@@ -24,9 +18,10 @@ int main(int argc, char** argv) {
 	Menu menu;
 	LeapListener listener(menu);
 	Controller controller;
-	
-	std::thread eventThread(event_thread, menu);
-	eventThread.join();
+
+
+	Sound sound;
+	sound.playSine(0.5, 100);	
 
 	// Have the sample listener receive events from the controller
 	controller.addListener(listener);

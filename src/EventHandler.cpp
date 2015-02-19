@@ -10,7 +10,7 @@
 #include "Menu.h"
 
 
-void EventHandler::checkForEvent(Menu menu){
+void EventHandler::checkForEvent(){
 	
 	if (menu.isMenuOpen()){
 		//Need to get the handposition, how do I get it form here?
