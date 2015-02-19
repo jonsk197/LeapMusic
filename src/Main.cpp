@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string.h>
+#include <algorithm>
+#include <cmath>
+
 #include "../include/Leap.h"
 #include "LeapListener.h"
 #include "Matte.h"

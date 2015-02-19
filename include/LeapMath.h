@@ -1045,6 +1045,6 @@ struct Matrix
   Vector origin;
 };
 
-}; // namespace Leap
+} // namespace Leap
 
 #endif // __LeapMath_h__

@@ -20,9 +20,8 @@ if (PORTAUDIO_LIBRARIES AND PORTAUDIO_INCLUDE_DIRS)
 else (PORTAUDIO_LIBRARIES AND PORTAUDIO_INCLUDE_DIRS)
   if (NOT WIN32)
    include(FindPkgConfig)
-   pkg_check_modules(PORTAUDIO2 portaudio-2.0)
+   pkg_check_modules(PORTAUDIO2 portaudio-2.0 portaudiocpp)
   endif (NOT WIN32)
-
   if (PORTAUDIO2_FOUND)
     set(PORTAUDIO_INCLUDE_DIRS
       ${PORTAUDIO2_INCLUDE_DIRS}
@@ -59,6 +58,16 @@ else (PORTAUDIO_LIBRARIES AND PORTAUDIO_INCLUDE_DIRS)
         /sw/lib
     )
 
+    find_library(PORTAUDIOCPP_LIBRARY
+      NAMES
+        portaudiocpp
+      PATHS
+        /usr/lib
+        /usr/local/lib
+        /opt/local/lib
+        /sw/lib
+    )
+
     find_path(PORTAUDIO_LIBRARY_DIR
       NAMES
         portaudio
@@ -73,9 +82,8 @@ else (PORTAUDIO_LIBRARIES AND PORTAUDIO_INCLUDE_DIRS)
       ${PORTAUDIO_INCLUDE_DIR}
     )
     set(PORTAUDIO_LIBRARIES
-      ${PORTAUDIO_LIBRARY}
+      ${PORTAUDIO_LIBRARY} ${PORTAUDIOCPP_LIBRARY}
     )
-
     set(PORTAUDIO_LIBRARY_DIRS
       ${PORTAUDIO_LIBRARY_DIR}
     )
