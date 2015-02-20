@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
 
 	Sound sound;
-	sound.playSine(0.5, 100);	
+	sound.playSine(1, 200);	
 
 	// Have the sample listener receive events from the controller
 	controller.addListener(listener);

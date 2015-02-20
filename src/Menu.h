@@ -1,6 +1,6 @@
 
-#ifndef MENU
-#define MENU
+#ifndef LeapMusic_Menu
+#define LeapMusic_Menu
 #include "../include/Leap.h"
 #include "Entry.h"
 

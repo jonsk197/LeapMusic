@@ -1,5 +1,5 @@
-#ifndef Entry_H
-#define Entry_H
+#ifndef LeapMusic_Entry_H
+#define LeapMusic_Entry_H
 #include "../include/Leap.h"
 #include <string>
 
