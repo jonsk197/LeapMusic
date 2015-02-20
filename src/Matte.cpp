@@ -34,6 +34,6 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 	if(hand.x - menu.x > 0){
 		return angle;
 	}else{
-		return (M_PI - angle);
+		return (2*M_PI - angle);
 	}	
 }
