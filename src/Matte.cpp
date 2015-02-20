@@ -1,6 +1,8 @@
 #include "../include/Leap.h"
 #include "Matte.h"
 
+#include <cmath>
+
 using namespace Leap;
 
 /**
@@ -25,4 +27,13 @@ bool Matte::fuzzyEquals(Vector a, Vector b, double epsilon){
  */
 bool Matte::fuzzyAngleEquals(Vector a, Vector b, double epsilon){
 	return a.angleTo(b) < epsilon;
+}
+
+float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
+
+	if(hand.x - menu.x > 0){
+		return angle;
+	}else{
+		return (M_PI - angle);
+	}	
 }

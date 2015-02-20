@@ -1,14 +1,20 @@
-//
-//  Entry.h
-//  LeapMusic
-//
-//  Created by Jonas Skog Andersen on 2015-02-06.
-//
-//
+#ifndef Entry_H
+#define Entry_H
+#include "../include/Leap.h"
+#include <string>
 
-#ifndef __LeapMusic__Entry__
-#define __LeapMusic__Entry__
 
-#include <stdio.h>
+using namespace Leap;
 
-#endif /* defined(__LeapMusic__Entry__) */
+class Entry{
+public:
+	std::string title = "";
+	bool selected = false;
+	void setTitle(std::string str);
+	std::string getTitle();
+	void select();
+	void deSelect();
+private:
+};
+
+#endif

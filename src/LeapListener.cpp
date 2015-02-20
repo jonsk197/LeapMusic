@@ -6,6 +6,7 @@
 #include "LeapListener.h"
 #include "Matte.h"
 #include "Menu.h"
+#include "Sound.h"
 
 using namespace Leap;
 
@@ -132,15 +133,9 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-
-
-						if(menu.isOpen){
-                            menu.updateMenu(hand.palmNormal());
-                        }else{
-                            menu.open(hand.palmPosition());
-                        }
-
-                std::cout << ("You are in menu!!!!!!!!!!!!!!!!!!");
+				menu.isOpen = true;			
+				menu.openOrUpdateMenu(hand.palmPosition());
+				std::cout << ("!!!!!!!!!!!!!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
 
             if(abs(hand.palmNormal().roll() * RAD_TO_DEG) < 120){

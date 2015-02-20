@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	LeapListener listener(menu);
 	Controller controller;
 	Sound sound;
-	sound.playSine(1, 10);
+	sound.playSine(0.5, 100);	
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events

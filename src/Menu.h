@@ -2,19 +2,21 @@
 #ifndef MENU
 #define MENU
 #include "../include/Leap.h"
+#include "Entry.h"
 
-
+using namespace Leap;
 
 class Menu{
  public:
-	void open(Leap::Vector startPosition);
-	void updateMenu(Leap::Vector handPosition);
-	void close();
-	bool isOpen;
+	void openOrUpdateMenu(Leap::Vector handPosition);
+	bool isMenuOpen();
+	float nrOfEntries = 6;
+	std::vector<Entry> entries;
+	bool isOpen = false;
 
  private:
 	Leap::Vector menuCenter;
-	int menuSize;
+	float menuSize = 40;
 };
 
 #endif
