@@ -21,11 +21,9 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 	if(menuCenter.distanceTo(handPosition) > menuSize){
 		
 		float angleUnSigned = (handPosition - menuCenter).angleTo(Leap::Vector (0,1,0));
-		float angle = Matte::xSignedAngleTo(handPosition, menuCenter, angleUnSigned);
-		float angleDeg = angle*(180/M_PI);
+		float angleDeg = Matte::xSignedAngleTo(handPosition, menuCenter, angleUnSigned);
 
-		int angleOfSector = (int)(2*M_PI/nrOfEntries);
-		float angleOfSectorDeg = angleOfSector*(180/M_PI);
+		int angleOfSectorDeg = (int)(360/nrOfEntries);
 		int sector = (int) (angleDeg/angleOfSectorDeg);
 		
 		std::cout <<  "@@@@@@@@@@@@@@@@@@@" << std::endl << angleDeg << std::endl << "@@@@@@@@@@@@@@@@@@@" << std::endl << angleOfSectorDeg << std::endl << "@@@@@@@@@@@@@@@@@@@" << std::endl << sector << std::endl << "@@@@@@@@@@@@@@@@@@@";

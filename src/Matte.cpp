@@ -32,8 +32,8 @@ bool Matte::fuzzyAngleEquals(Vector a, Vector b, double epsilon){
 float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 
 	if(hand.x - menu.x > 0){
-		return angle;
+		return angle*(180/M_PI);
 	}else{
-		return (2*M_PI - angle);
+		return (2*M_PI - angle)*(180/M_PI);
 	}	
 }
