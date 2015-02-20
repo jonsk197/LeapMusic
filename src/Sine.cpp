@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <cmath>
 
-#include "Sine.h"
+#include "Sine.hpp"
 
 Sine::Sine(int tableSize) :
 	tableSize_(tableSize), leftPhase_(0), rightPhase_(0)

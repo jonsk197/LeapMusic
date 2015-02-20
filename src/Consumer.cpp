@@ -1,10 +1,9 @@
-#include "LeapListener.h"
-#include "Consumer.hpp"
-
 #include <thread>
 
-Consumer::Consumer(LeapListener& listen) : listener(listen) {
-}
+#include "LeapListener.hpp"
+#include "Consumer.hpp"
+
+Consumer::Consumer(LeapListener& listen) : listener(listen) {}
 
 void Consumer::startConsumeLoop() {
 	while (true) {
@@ -12,6 +11,7 @@ void Consumer::startConsumeLoop() {
 		currentTone = listener.getTone();
 		playingNote = listener.isPlaying();
 		recording = listener.isRecording();
+		std::this_thread::yield();
 	}
 }
 

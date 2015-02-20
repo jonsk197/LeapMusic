@@ -1,5 +1,5 @@
-#include "Sound.h"
-#include "Sine.h"
+#include "Sound.hpp"
+#include "Sine.hpp"
 
 Sound::Sound(){
 	int outDevice = sys.defaultOutputDevice().index();

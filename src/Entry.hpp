@@ -1,8 +1,9 @@
-#ifndef LeapMusic_Entry_H
-#define LeapMusic_Entry_H
-#include "../include/Leap.h"
+#ifndef LEAPMUSIC_ENTRY
+#define LEAPMUSIC_ENTRY
+
 #include <string>
 
+#include "../include/Leap.h"
 
 using namespace Leap;
 

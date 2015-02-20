@@ -1,7 +1,7 @@
-#include "../include/Leap.h"
-#include "Matte.h"
-
 #include <cmath>
+
+#include "../include/Leap.h"
+#include "Matte.hpp"
 
 using namespace Leap;
 
@@ -35,5 +35,5 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 		return angle;
 	}else{
 		return (2*M_PI - angle);
-	}	
+	}
 }

@@ -1,11 +1,10 @@
-#ifndef LEAP_LISTENER
-#define LEAP_LISTENER
+#ifndef LEAPMUSIC_LISTENER
+#define LEAPMUSIC_LISTENER
 
-#include <string.h>
+#include <string>
 #include <mutex>
 
 #include "../include/Leap.h"
-#include "Menu.h"
 
 using namespace Leap;
 
@@ -16,10 +15,10 @@ const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE"
 class LeapListener : public Leap::Listener {
  public:
   // Because we have a mutex which is nonmovable
+	// we must redefine the copy constructor and assignment.
 	LeapListener(LeapListener const&);
 	LeapListener& operator=(const LeapListener& rhs);
 
-	LeapListener(Menu& menu);
   LeapListener();
 
 	virtual void onInit(const Controller&);
@@ -69,7 +68,6 @@ class LeapListener : public Leap::Listener {
 	bool menuOpen;
 	bool playing;
 	bool recording;
-	Menu menu;
 };
 
 #endif

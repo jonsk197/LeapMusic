@@ -1,15 +1,13 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <cmath>
 #include <thread>
 
 #include "../include/Leap.h"
-#include "LeapListener.h"
-#include "Matte.h"
-#include "Sound.h"
+#include "LeapListener.hpp"
+#include "Matte.hpp"
+#include "Sound.hpp"
 #include "Consumer.hpp"
-
-using namespace Leap;
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
@@ -17,7 +15,7 @@ int main(int argc, char** argv) {
 	LeapListener listener(menu);
 	Controller controller;
 	Sound sound;
-	sound.playSine(1, 200);	
+	sound.playSine(1, 200);
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events

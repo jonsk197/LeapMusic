@@ -1,22 +1,20 @@
+#ifndef LEAPMUSIC_MENU
+#define LEAPMUSIC_MENU
 
-#ifndef LeapMusic_Menu
-#define LeapMusic_Menu
 #include "../include/Leap.h"
-#include "Entry.h"
-
-using namespace Leap;
+#include "Entry.hpp"
 
 class Menu{
  public:
 	void openOrUpdateMenu(Leap::Vector handPosition);
 	bool isMenuOpen();
-	float nrOfEntries = 6;
 	std::vector<Entry> entries;
 	bool isOpen = false;
 
  private:
+	const float MENU_SIZE = 25;
+	float nrOfEntries;
 	Leap::Vector menuCenter;
-	float menuSize = 25;
 };
 
 #endif

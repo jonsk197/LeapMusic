@@ -3,10 +3,10 @@
 #include <mutex>
 
 #include "../include/Leap.h"
-#include "LeapListener.h"
-#include "Matte.h"
-#include "Menu.h"
-#include "Sound.h"
+#include "LeapListener.hpp"
+#include "Matte.hpp"
+#include "Menu.hpp"
+#include "Sound.hpp"
 
 using namespace Leap;
 
@@ -133,7 +133,6 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-				menu.isOpen = true;
 				menu.openOrUpdateMenu(hand.palmPosition());
 				std::cout << ("!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!");
 			}

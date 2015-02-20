@@ -1,5 +1,6 @@
-#ifndef MATTE
-#define MATTE
+#ifndef LEAPMUSIC_MATTE
+#define LEAPMUSIC_MATTE
+
 #include "../include/Leap.h"
 
 using namespace Leap;

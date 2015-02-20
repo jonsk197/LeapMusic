@@ -1,7 +1,7 @@
-#ifndef LEAP_CONSUMER
-#define LEAP_CONSUMER
+#ifndef LEAPMUSIC_CONSUMER
+#define LEAPMUSIC_CONSUMER
 
-#include "LeapListener.h"
+#include "LeapListener.hpp"
 
 class Consumer{
  public:

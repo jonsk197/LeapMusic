@@ -1,15 +1,6 @@
-//
-//  Entry.cpp
-//  LeapMusic
-//
-//  Created by Jonas Skog Andersen on 2015-02-06.
-//
-//
+#include "<string>"
 
-#include "Entry.h"
-#include "string"
-
-
+#include "Entry.hpp"
 
 void Entry::setTitle(std::string str){
 	title = str;
@@ -27,4 +18,3 @@ void Entry::select(){
 void Entry::deSelect(){
 	selected = false;
 }
-
