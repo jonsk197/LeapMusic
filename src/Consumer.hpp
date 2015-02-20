@@ -2,6 +2,7 @@
 #define LEAPMUSIC_CONSUMER
 
 #include "LeapListener.hpp"
+#include "Menu.hpp"
 
 class Consumer{
  public:
@@ -27,6 +28,7 @@ class Consumer{
 	bool menuOpen;
 	bool playingNote;
 	bool recording;
+	Menu menu;
 };
 
 #endif

@@ -19,7 +19,7 @@ class LeapListener : public Leap::Listener {
 	LeapListener(LeapListener const&);
 	LeapListener& operator=(const LeapListener& rhs);
 
-  LeapListener();
+  LeapListener() = default;
 
 	virtual void onInit(const Controller&);
 	virtual void onConnect(const Controller&);

@@ -10,10 +10,6 @@
 
 using namespace Leap;
 
-LeapListener::LeapListener(Menu& meny){
-	menu = meny;
-}
-
 LeapListener::LeapListener(const LeapListener& from):
 	tone(from.tone),
 	menuOpen(from.menuOpen),
@@ -32,24 +28,20 @@ LeapListener& LeapListener::operator=(const LeapListener& rhs) {
 	return *this;
 }
 
-void LeapListener::onInit(const Controller& controller) {
+void LeapListener::onInit(const Controller&) {
 	std::cout << "Initialized" << std::endl;
 }
 
-void LeapListener::onConnect(const Controller& controller) {
+void LeapListener::onConnect(const Controller&) {
 	std::cout << "Connected" << std::endl;
-	controller.enableGesture(Gesture::TYPE_CIRCLE);
-	controller.enableGesture(Gesture::TYPE_KEY_TAP);
-	controller.enableGesture(Gesture::TYPE_SCREEN_TAP);
-	controller.enableGesture(Gesture::TYPE_SWIPE);
 }
 
-void LeapListener::onDisconnect(const Controller& controller) {
+void LeapListener::onDisconnect(const Controller&) {
 	// Note: not dispatched when running in a debugger.
 	std::cout << "Disconnected" << std::endl;
 }
 
-void LeapListener::onExit(const Controller& controller) {
+void LeapListener::onExit(const Controller&) {
 	std::cout << "Exited" << std::endl;
 }
 
@@ -133,7 +125,7 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-				menu.openOrUpdateMenu(hand.palmPosition());
+
 				std::cout << ("!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!");
 			}
 			else {
@@ -226,11 +218,11 @@ void LeapListener::onFrame(const Controller& controller) {
 	}
 }
 
-void LeapListener::onFocusGained(const Controller& controller) {
+void LeapListener::onFocusGained(const Controller&) {
 	std::cout << "Focus Gained" << std::endl;
 }
 
-void LeapListener::onFocusLost(const Controller& controller) {
+void LeapListener::onFocusLost(const Controller&) {
 	std::cout << "Focus Lost" << std::endl;
 }
 
@@ -244,11 +236,11 @@ void LeapListener::onDeviceChange(const Controller& controller) {
 	}
 }
 
-void LeapListener::onServiceConnect(const Controller& controller) {
+void LeapListener::onServiceConnect(const Controller&) {
 	std::cout << "Service Connected" << std::endl;
 }
 
-void LeapListener::onServiceDisconnect(const Controller& controller) {
+void LeapListener::onServiceDisconnect(const Controller&) {
 	std::cout << "Service Disconnected" << std::endl;
 }
 

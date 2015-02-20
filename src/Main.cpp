@@ -11,8 +11,7 @@
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
-	Menu menu;
-	LeapListener listener(menu);
+	LeapListener listener;
 	Controller controller;
 	Sound sound;
 	sound.playSine(1, 200);
