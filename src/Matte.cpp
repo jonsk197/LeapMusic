@@ -37,3 +37,11 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 		return (2*M_PI - angle) * RAD_TO_DEG;
 	}	
 }
+
+float Matte::linearToDb(float x){
+	return (log(x)*20);	
+}
+
+float Matte::dbToLinear(float db){
+	return ((log(10) / 20)*db);
+}

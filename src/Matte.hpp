@@ -11,6 +11,8 @@ class Matte{
 	static bool fuzzyEquals(Vector a, Vector b, double epsilon);
 	static bool fuzzyAngleEquals(Vector a, Vector b, double epsilon);
 	static float xSignedAngleTo(Vector hand, Vector menu, float angle);
+	static float linearToDb(float x);
+	static float dbToLinear(float db);
 };
 
 #endif
