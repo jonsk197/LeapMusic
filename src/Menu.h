@@ -16,7 +16,7 @@ class Menu{
 
  private:
 	Leap::Vector menuCenter;
-	float menuSize = 40;
+	float menuSize = 25;
 };
 
 #endif
