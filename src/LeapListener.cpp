@@ -1,14 +1,34 @@
-#include "LeapListener.h"
-#include "../include/Leap.h"
-#include "Matte.h"
-#include <algorithm>
 #include <cmath>
+#include <algorithm>
+#include <mutex>
+
+#include "../include/Leap.h"
+#include "LeapListener.h"
+#include "Matte.h"
 #include "Menu.h"
 
 using namespace Leap;
 
 LeapListener::LeapListener(Menu& meny){
 	menu = meny;
+}
+
+LeapListener::LeapListener(const LeapListener& from):
+	tone(from.tone),
+	menuOpen(from.menuOpen),
+	playing(from.playing),
+	recording(from.recording) {
+
+}
+
+LeapListener& LeapListener::operator=(const LeapListener& rhs) {
+	if (this != &rhs){
+		tone = rhs.tone;
+		menuOpen = rhs.menuOpen;
+		playing = rhs.playing;
+		recording = rhs.recording;
+	}
+	return *this;
 }
 
 void LeapListener::onInit(const Controller& controller) {
@@ -113,7 +133,7 @@ void LeapListener::onFrame(const Controller& controller) {
 
 			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
 
-            
+
 						if(menu.isOpen){
                             menu.updateMenu(hand.palmNormal());
                         }else{
@@ -122,7 +142,7 @@ void LeapListener::onFrame(const Controller& controller) {
 
                 std::cout << ("You are in menu!!!!!!!!!!!!!!!!!!");
 			}
-        
+
             if(abs(hand.palmNormal().roll() * RAD_TO_DEG) < 120){
                 menu.close();
                 std::cout << ("You closing the menu############################");
@@ -238,4 +258,27 @@ void LeapListener::onServiceConnect(const Controller& controller) {
 
 void LeapListener::onServiceDisconnect(const Controller& controller) {
 	std::cout << "Service Disconnected" << std::endl;
+}
+
+
+bool LeapListener::getMenuOpen() {
+	std::lock_guard<std::mutex> lock(dataLock);
+	return menuOpen;
+}
+
+
+double LeapListener::getTone() {
+	std::lock_guard<std::mutex> lock(dataLock);
+	return tone;
+}
+
+
+bool LeapListener::isRecording() {
+	std::lock_guard<std::mutex> lock(dataLock);
+	return recording;
+}
+
+bool LeapListener::isPlaying() {
+	std::lock_guard<std::mutex> lock(dataLock);
+	return playing;
 }

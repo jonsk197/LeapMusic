@@ -1,14 +1,13 @@
 #include <iostream>
 #include <string.h>
-#include <algorithm>
 #include <cmath>
+#include <thread>
 
 #include "../include/Leap.h"
 #include "LeapListener.h"
 #include "Matte.h"
 #include "Sound.h"
-
-
+#include "Consumer.hpp"
 
 using namespace Leap;
 
@@ -20,8 +19,15 @@ int main(int argc, char** argv) {
 	Sound sound;
 	sound.playSine(1, 10);
 
-	// Have the sample listener receive events from the controller
+	/* Have the sample listener receive events from the controller.
+	 * It should do nothing more but simply listen and record events
+	 * from the device, which can be used in another thread. */
 	controller.addListener(listener);
+
+	/* The consumer takes action on the data produced by the
+	 * listener. It's responsible for things actually sounding
+	 * and appearing on screen. */
+	std::thread consumerThread(&Consumer::threadEntry, std::ref(listener));
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
