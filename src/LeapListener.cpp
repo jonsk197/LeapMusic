@@ -112,7 +112,6 @@ void LeapListener::onFrame(const Controller& controller) {
 			}
 			else
 				thumbPoint = finger.bone(Bone::TYPE_DISTAL).nextJoint();
-
 		}
 
 		// Check if all the positions in the array are set to true
@@ -121,19 +120,38 @@ void LeapListener::onFrame(const Controller& controller) {
 										[](bool b){
 											return b;
 										})) {
-			std::cout << "The hand is closed.";
+			std::cout << "The hand is closed. ";
+			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			recording = true;
+			playing = true;
+		}
+		else if (fingersClosed[Finger::TYPE_PINKY] && fingersClosed[Finger::TYPE_RING]) {
+			std::cout << "Recording. ";
+			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			playing = true;
+			recording = false;
+		}
+		else {
+			std::cout << "The hand is open. ";
+			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			recording = false;
+			playing = false;
 		}
 
-			if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-
-				std::cout << ("!!!!!!!!!!!!!You are in menu!!!!!!!!!!!!!!!!!");
-			}
-			else {
-				std::cout << ("You closing the menu#########################");
-			}
+		// Is the hard turned upside down?
+		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
+			std::cout << ("Menu open. ");
+			std::lock_guard<std::mutex> lock(menuLock);
+			menuOpen = true;
+		}
+		else {
+			std::cout << ("Menu Closed. ");
+			std::lock_guard<std::mutex> lock(menuLock);
+			menuOpen = false;
+		}
 
 		if( Matte::fuzzyEquals(indexPoint, thumbPoint, 5))
-			std::cout << "Index finger and thumb touching";
+			std::cout << "Index finger and thumb touching. ";
 	}
 
 	// Get tools
@@ -246,23 +264,24 @@ void LeapListener::onServiceDisconnect(const Controller&) {
 
 
 bool LeapListener::getMenuOpen() {
-	std::lock_guard<std::mutex> lock(dataLock);
+	std::lock_guard<std::mutex> lock(menuLock);
 	return menuOpen;
 }
 
 
 double LeapListener::getTone() {
-	std::lock_guard<std::mutex> lock(dataLock);
+	std::lock_guard<std::mutex> lock(toneLock);
 	return tone;
 }
 
 
 bool LeapListener::isRecording() {
-	std::lock_guard<std::mutex> lock(dataLock);
+	std::lock_guard<std::mutex> lock(recordPlayingLock);
 	return recording;
 }
 
+
 bool LeapListener::isPlaying() {
-	std::lock_guard<std::mutex> lock(dataLock);
+	std::lock_guard<std::mutex> lock(recordPlayingLock);
 	return playing;
 }
