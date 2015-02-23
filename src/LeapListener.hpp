@@ -14,12 +14,12 @@ const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE"
 
 class LeapListener : public Leap::Listener {
  public:
-  // Because we have a mutex which is nonmovable
+	// Because we have a mutex which is nonmovable
 	// we must redefine the copy constructor and assignment.
 	LeapListener(LeapListener const&);
 	LeapListener& operator=(const LeapListener& rhs);
 
-  LeapListener() = default;
+	LeapListener() = default;
 
 	virtual void onInit(const Controller&);
 	virtual void onConnect(const Controller&);
@@ -63,9 +63,11 @@ class LeapListener : public Leap::Listener {
 	bool isRecording();
 
  private:
-  std::mutex dataLock;
-  double tone;
+	std::mutex toneLock;
+	double tone;
+	std::mutex menuLock;
 	bool menuOpen;
+	std::mutex recordPlayingLock;
 	bool playing;
 	bool recording;
 };
