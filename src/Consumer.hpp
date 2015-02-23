@@ -29,6 +29,7 @@ class Consumer{
 	bool playingNote;
 	bool recording;
 	Menu menu;
+	Leap::Vector palmPosition; 
 };
 
 #endif
