@@ -80,15 +80,21 @@ class LeapListener : public Leap::Listener {
  private:
 	std::mutex toneLock;
 	double tone;
+
 	std::mutex menuLock;
 	bool menuOpen;
+
 	std::mutex recordPlayingLock;
 	bool playing;
 	bool recording;
+
 	std::mutex frequencyLock;
 	float frequency;
+
 	std::mutex palmPositionLock;
 	Vector palmPosition;
+
+	const bool DEBUG = false;
 };
 
 #endif
