@@ -62,6 +62,21 @@ class LeapListener : public Leap::Listener {
 	 */
 	bool isRecording();
 
+	/**
+	 * @brief Returns the frequency for the hand position.
+	 *
+	 * @return a vector with the handposition.
+	 */
+	float getFrequency();
+
+
+	/**
+	 * @brief Returns the hand position.
+	 *
+	 * @return a float with the db for the frequency.
+	 */
+	Vector getPalmPosition();
+
  private:
 	std::mutex toneLock;
 	double tone;
@@ -72,6 +87,12 @@ class LeapListener : public Leap::Listener {
 	std::mutex recordPlayingLock;
 	bool playing;
 	bool recording;
+
+	std::mutex frequencyLock;
+	float frequency;
+
+	std::mutex palmPositionLock;
+	Vector palmPosition;
 
 	const bool DEBUG = false;
 };

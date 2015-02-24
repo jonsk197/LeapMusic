@@ -7,7 +7,7 @@
 class Menu{
  public:
 	void openOrUpdateMenu(Leap::Vector handPosition);
-	bool isMenuOpen();
+	void closeMenu();
 	std::vector<Entry> entries;
 	bool isOpen = false;
 
