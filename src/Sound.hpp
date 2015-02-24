@@ -26,6 +26,20 @@ class Sound{
 	float frequencyOfNoteFromC4(int n);
 
 	/**
+	 * @brief Returns the frequency of a musical note with an offset n
+	 * from C0.
+	 *
+	 * C0 is commonly the musical not to the very left of a full size
+	 * piano. It's the lowest of C:s. Normally only positive n:s should
+	 * be provided as arguments to this function.
+	 *
+	 * @param n The number of notes, positive or negative, the desired
+	 * note is from C0.
+	 * @return float The frequency of the note.
+	 */
+	float frequencyOfNoteFromC0(int n);
+
+	/**
 	 * Here follows the definition of the frequency of every musical
 	 * note in the european scale as a C++ float const.
 	 */

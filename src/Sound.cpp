@@ -26,3 +26,11 @@ void Sound::playSine(double length, double frequency){
 	sys.sleep(length * 1000);
 	streamBeep.stop();
 }
+
+float Sound::frequencyOfNoteFromC4(int n){
+	return C5 * pow(2, n/12);
+}
+
+float Sound::frequencyOfNoteFromC0(int n){
+	return C0 * pow(2, n/12);
+}
