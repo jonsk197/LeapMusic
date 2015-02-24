@@ -12,7 +12,8 @@ Sound::Sound(){
 
 
 void Sound::playSine(double length, double frequency){
-	Sine sine(100);
+	int table_size = SAMPLE_RATE / frequency;
+	Sine sine(table_size);
 
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
@@ -24,5 +25,4 @@ void Sound::playSine(double length, double frequency){
 	streamBeep.start();
 	sys.sleep(length * 1000);
 	streamBeep.stop();
-	streamBeep.close();
 }
