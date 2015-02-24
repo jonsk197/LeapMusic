@@ -14,7 +14,23 @@ int main(int argc, char** argv) {
 	LeapListener listener;
 	Controller controller;
 	Sound sound;
-	sound.playSine(1, 200);
+
+	// Lille katt
+	sound.playSine(0.25, Sound::C5);
+	sound.playSine(0.25, Sound::D5);
+	sound.playSine(0.5, Sound::E5);
+
+	sound.playSine(0.25, Sound::C5);
+	sound.playSine(0.25, Sound::D5);
+	sound.playSine(0.5, Sound::E5);
+
+	sound.playSine(0.25, 659);
+	sound.playSine(0.25, 783);
+	sound.playSine(0.25, 698);
+	sound.playSine(0.25, 659);
+	sound.playSine(0.25, 698);
+	sound.playSine(0.25, 659);
+	sound.playSine(0.25, 587);
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
