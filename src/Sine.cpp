@@ -19,11 +19,11 @@ Sine::~Sine(){
 int Sine::generate(const void* inputBuffer,
 			    void* outputBuffer,
 			    unsigned long framesPerBuffer,
-			    const PaStreamCallbackTimeInfo *timeInfo,
+			    const PaStreamCallbackTimeInfo* timeInfo,
 			    PaStreamCallbackFlags statusFlags){
   assert(outputBuffer != NULL);
 
-  float **out = static_cast<float **>(outputBuffer);
+	float **out = static_cast<float **>(outputBuffer);
 
   for (unsigned int i = 0; i < framesPerBuffer; ++i)
     {
