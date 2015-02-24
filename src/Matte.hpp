@@ -13,6 +13,7 @@ class Matte{
 	static float xSignedAngleTo(Vector hand, Vector menu, float angle);
 	static float linearToDb(float x);
 	static float dbToLinear(float db);
+	static float xyDistanceTo(Vector hand, Vector menu);
 };
 
 #endif
