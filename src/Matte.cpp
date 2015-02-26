@@ -43,10 +43,7 @@ float Matte::xyDistanceTo(Vector hand, Vector menu){
 	return menu.distanceTo(hand);
 }
 
-float Matte::linearToDb(float x){
-	return (log(x)*20);	
-}
-
-float Matte::dbToLinear(float db){
-	return ((log(10) / 20)*db);
+float Matte::handpositionToFrequency(float x){
+	float f = x * SCALING_FACTOR;
+	return f;	
 }

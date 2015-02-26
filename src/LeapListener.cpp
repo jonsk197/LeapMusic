@@ -76,8 +76,7 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 		{
 			std::lock_guard<std::mutex> lock(frequencyLock);
-			frequency = Matte::linearToDb(hand.palmPosition().y); 
-			std::cout << frequency << std::endl;
+			frequency = Matte::handpositionToFrequency(hand.palmPosition().y); 
 		}
 		if (DEBUG) {
 		// Calculate the hand's pitch, roll, and yaw angles
