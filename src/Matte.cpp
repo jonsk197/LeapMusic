@@ -39,7 +39,7 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 }
 
 float Matte::xyDistanceTo(Vector hand, Vector menu){
-	hand.z, menu.z = 0;
+	hand.z = menu.z;
 	return menu.distanceTo(hand);
 }
 

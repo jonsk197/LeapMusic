@@ -73,12 +73,11 @@ void LeapListener::onFrame(const Controller& controller) {
 		{
 			std::lock_guard<std::mutex> lock(palmPositionLock);
 			palmPosition = hand.palmPosition();
-			std::cout << hand.palmPosition();
 		}
 		{
 			std::lock_guard<std::mutex> lock(frequencyLock);
 			frequency = Matte::linearToDb(hand.palmPosition().y); 
-			std::cout << frequency;
+			std::cout << frequency << std::endl;
 		}
 		if (DEBUG) {
 		// Calculate the hand's pitch, roll, and yaw angles
@@ -143,19 +142,19 @@ void LeapListener::onFrame(const Controller& controller) {
 										[](bool b){
 											return b;
 										})) {
-			std::cout << "Recording. ";
+			std::cout << "Recording.       ";
 			std::lock_guard<std::mutex> lock(recordPlayingLock);
 			recording = true;
 			playing = true;
 		}
 		else if (fingersClosed[Finger::TYPE_PINKY] && fingersClosed[Finger::TYPE_RING]) {
-			std::cout << "Playing. ";
+			std::cout << "Playing.       ";
 			std::lock_guard<std::mutex> lock(recordPlayingLock);
 			playing = true;
 			recording = false;
 		}
 		else {
-			std::cout << "The hand is open. ";
+			std::cout << "The hand is open.      ";
 			std::lock_guard<std::mutex> lock(recordPlayingLock);
 			recording = false;
 			playing = false;
@@ -163,12 +162,12 @@ void LeapListener::onFrame(const Controller& controller) {
 
 		// Is the hard turned upside down?
 		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-			std::cout << ("Menu open. ");
+			std::cout << "Menu open. " << std::endl;
 			std::lock_guard<std::mutex> lock(menuLock);
 			menuOpen = true;
 		}
 		else {
-			std::cout << ("Menu Closed. ");
+			std::cout << "Menu Closed. " << std::endl;
 			std::lock_guard<std::mutex> lock(menuLock);
 			menuOpen = false;
 		}
