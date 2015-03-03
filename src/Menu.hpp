@@ -8,7 +8,7 @@ class Menu{
  public:
 	void openOrUpdateMenu(Leap::Vector handPosition);
 	void closeMenu();
-	void addEnrty();
+	void addEntry();
 	void addEntry(Entry e);
 	void removeEntry(Entry e);
 	std::vector<Entry> entries;
