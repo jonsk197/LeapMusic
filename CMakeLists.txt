@@ -14,5 +14,6 @@ message (STATUS "Architecture is ${arch}")
 
 set (Leap_lib ${CMAKE_SOURCE_DIR}/LeapSDK/lib)
 find_package(PortAudio)
+find_package(PortMidi)
 
 add_subdirectory (src)
