@@ -22,12 +22,14 @@ int main(int argc, char** argv) {
 	controller.addListener(listener);
 
 	/* The thread which plays a continous sine wave. */
-	std::thread soundThread(&Sound::continousSineThreadEntry, std::ref(sound));
+	std::thread soundThread(&Sound::continousSineThreadEntry,
+													std::ref(sound));
 
 	/* The consumer takes action on the data produced by the
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
-	std::thread consumerThread(&Consumer::threadEntry, std::ref(listener));
+	std::thread consumerThread(&Consumer::threadEntry,
+														 std::ref(listener), std::ref(sound));
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
