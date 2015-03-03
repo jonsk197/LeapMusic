@@ -16,7 +16,7 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 	isOpen = true;
 
 
-	if( Matte::xyDistanceTo(menuCenter, handPosition) > MENU_SIZE){
+	if(Matte::xyDistanceTo(menuCenter, handPosition) > MENU_SIZE) {
 
 		float angleUnSigned = (handPosition - menuCenter).angleTo(Leap::Vector (0,1,0));
 		float angleDeg = Matte::xSignedAngleTo(handPosition, menuCenter, angleUnSigned);
@@ -24,11 +24,19 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 		int angleOfSectorDeg = (int)(360/nrOfEntries);
 		int sector = (int) (angleDeg/angleOfSectorDeg);
 
-		entries.at(sector).select();
+  if(DEBUG) {
+    std::cout << angleDeg << "	 " << angleOfSectorDeg << "   " << sector << "	 "<< std::endl;
+  }
+		entries.at(sector).activateFunction();
 
 	}
 }
 
 void Menu::closeMenu(){
 	 isOpen =false;
+}
+
+void Menu::addEntry(Entry e){
+	nrOfEntries++;
+	entries.push_back(e);
 }

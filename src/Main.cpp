@@ -27,9 +27,7 @@ int main(int argc, char** argv) {
 	/* The consumer takes action on the data produced by the
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
-	std::thread consumerThread(&Consumer::threadEntry,
-														 std::ref(listener), std::ref(sound));
-
+	std::thread consumerThread(&Consumer::threadEntry, std::ref(listener));
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);

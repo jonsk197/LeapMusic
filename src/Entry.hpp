@@ -9,13 +9,12 @@ using namespace Leap;
 
 class Entry{
 public:
-	std::string title = "";
-	bool selected = false;
+	Entry(std::string name, std::function<void(void)> activateFunction);
 	void setTitle(std::string str);
 	std::string getTitle();
-	void select();
-	void deSelect();
+	std::function<void(void)> activateFunction;
 private:
+	std::string title;
 };
 
 #endif

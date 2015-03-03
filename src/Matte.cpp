@@ -39,14 +39,11 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 }
 
 float Matte::xyDistanceTo(Vector hand, Vector menu){
-	hand.z, menu.z = 0;
+	hand.z = menu.z;
 	return menu.distanceTo(hand);
 }
 
-float Matte::linearToDb(float x){
-	return (log(x)*20);	
-}
-
-float Matte::dbToLinear(float db){
-	return ((log(10) / 20)*db);
+float Matte::handpositionToFrequency(float x){
+	float f = x * SCALING_FACTOR;
+	return f;	
 }
