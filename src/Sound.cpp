@@ -1,7 +1,10 @@
-#include "Sound.hpp"
-#include "Sine.hpp"
+#include <math.h>
 
-Sound::Sound(){
+#include "Sound.hpp"
+#include "ContinousSine.hpp"
+
+Sound::Sound() :
+	sine(Sound::A4) {
 	int outDevice = sys.defaultOutputDevice().index();
 	outParamsBeep = portaudio::DirectionSpecificStreamParameters(
 			sys.deviceByIndex(outDevice),
@@ -11,26 +14,55 @@ Sound::Sound(){
 }
 
 
-void Sound::playSine(double length, double frequency){
-	int table_size = SAMPLE_RATE / frequency;
-	Sine sine(table_size);
+void Sound::playSine(float length, float frequency) {
+	sine.setFrequency(frequency);
 
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
-							 outParamsBeep, SAMPLE_RATE, 1,
+							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
 							 paClipOff);
-	portaudio::MemFunCallbackStream<Sine>
-		streamBeep(paramsBeep, sine, &Sine::generate);
+	portaudio::MemFunCallbackStream<ContinousSine>
+		streamBeep(paramsBeep, sine, &ContinousSine::PACallback);
 
 	streamBeep.start();
-	sys.sleep(length * 1000);
-	streamBeep.stop();
+	sys.sleep(1000 * length);
 }
 
-float Sound::frequencyOfNoteFromC4(int n){
-	return C5 * pow(2, n/12);
+
+void Sound::continousSineThreadEntry(Sound& sound) {
+	Sound* soundPointer = &sound;
+	return soundPointer->startContinousSine();
 }
 
-float Sound::frequencyOfNoteFromC0(int n){
+void Sound::startContinousSine(void) {
+	portaudio::StreamParameters
+		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
+							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
+							 paClipOff);
+	portaudio::MemFunCallbackStream<ContinousSine>
+		streamBeep(paramsBeep, sine, &ContinousSine::PACallback);
+
+	streamBeep.start();
+	sys.sleep(10000000);
+}
+
+double Sound::frequencyOfNoteFromA4(int n){
+	return A4 * pow(2, n/12);
+}
+
+double Sound::frequencyOfNoteFromA4(double f) {
+	return C0 * pow(2, f/12.f);
+}
+
+double Sound::frequencyOfNoteFromC0(int n) {
 	return C0 * pow(2, n/12);
+}
+
+double Sound::frequencyOfNoteFromC0(double f) {
+	return C0 * pow(2, f/12.f);
+}
+
+ContinousSine& Sound::getContinousSine(void) {
+	ContinousSine& s = sine;
+	return s;
 }

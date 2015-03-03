@@ -3,6 +3,7 @@
 
 #include "LeapListener.hpp"
 #include "Menu.hpp"
+#include "Sound.hpp"
 
 class Consumer{
  public:
@@ -11,25 +12,28 @@ class Consumer{
 	 *
 	 * @param listen A reference to the instance of LeapListener
 	 * from which data is to be consumed.
+	 * @param sound A reference to the Sound system used for output.
+	 *
 	 * @return Consumer A new instance of the Consumer class.
 	 */
-	Consumer(LeapListener& listener);
+	Consumer(LeapListener& listen, Sound& sound);
 
 	/**
 	 * @brief Starts the loop which consumes data from the
 	 * LeapListener specified in the constructor.
 	 */
 	void startConsumeLoop();
-	static void threadEntry(LeapListener& listener);
+	static void threadEntry(LeapListener& listener, Sound& sound);
 
  private:
 	LeapListener& listener;
+	Sound& sound;
 	double currentTone;
 	bool menuOpen;
 	bool playingNote;
 	bool recording;
 	Menu menu;
-	Leap::Vector palmPosition; 
+	Leap::Vector palmPosition;
 };
 
 #endif

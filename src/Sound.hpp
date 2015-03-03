@@ -1,7 +1,9 @@
 #ifndef LEAPMUSIC_SOUND
 #define LEAPMUSIC_SOUND
 
-#include "portaudiocpp/PortAudioCpp.hxx"
+#include <portaudiocpp/PortAudioCpp.hxx>
+
+#include "ContinousSine.hpp"
 
 class Sound{
  public:
@@ -12,8 +14,19 @@ class Sound{
 	 * @param length For how long in seconds the tone should be played.
 	 * @param frequency The frequency of the tone.
 	 */
-	void playSine(double length, double frequency);
+	void playSine(float length, float frequency);
 	Sound();
+
+	/**
+	 * @brief Entry point for a thread which plays a continous sine
+	 * wave.
+	 */
+	static void continousSineThreadEntry(Sound& sound);
+
+	/**
+	 * @brief Starts the playback of an endless sine wave.
+	 */
+	void startContinousSine(void);
 
 	/**
 	 * @brief Returns the frequency of a musical note with an offset n
@@ -23,7 +36,16 @@ class Sound{
 	 * note is from C4.
 	 * @return float The frequency of the note.
 	 */
-	float frequencyOfNoteFromC4(int n);
+	static double frequencyOfNoteFromA4(int n);
+	/**
+	 * @brief Returns the frequency of a musical note with an offset n
+	 * from C4.
+	 *
+	 * @param f The number of notes, positive or negative, the desired
+	 * note is from C4.
+	 * @return float The frequency of the note.
+	 */
+	static double frequencyOfNoteFromA4(double f);
 
 	/**
 	 * @brief Returns the frequency of a musical note with an offset n
@@ -37,7 +59,29 @@ class Sound{
 	 * note is from C0.
 	 * @return float The frequency of the note.
 	 */
-	float frequencyOfNoteFromC0(int n);
+	static double frequencyOfNoteFromC0(int n);
+	/**
+	 * @brief Returns the frequency of a musical note with an offset n
+	 * from C0.
+	 *
+	 * C0 is commonly the musical not to the very left of a full size
+	 * piano. It's the lowest of C:s. Normally only positive n:s should
+	 * be provided as arguments to this function.
+	 *
+	 * @param f The number of notes, positive or negative, the desired
+	 * note is from C0.
+	 * @return float The frequency of the note.
+	 */
+	static double frequencyOfNoteFromC0(double f);
+
+
+	/**
+	 * @brief Get a reference to this Sound systemes instance of a
+	 * continous sine object.
+	 *
+	 * @return ContinousSine& A reference to the ContinousSine.
+	 */
+	ContinousSine& getContinousSine(void);
 
 	/**
 	 * Here follows the definition of the frequency of every musical
@@ -197,13 +241,14 @@ class Sound{
 	static constexpr float Bb8 = 7458.62f;
 	static constexpr float B8 =  7902.13f;
 
+	static constexpr double SAMPLE_RATE = 48000.0f;
+  static const int FRAMES_PER_BUFFER = 256;
 
  private:
-	static constexpr double SAMPLE_RATE = 48000.0f;
-  static const int FRAMES_PER_BUFFER = 64;
   portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
+	ContinousSine sine;
 };
 
 #endif

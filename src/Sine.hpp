@@ -1,10 +1,7 @@
 #ifndef LEAPMUSIC_SINE
 #define LEAPMUSIC_SINE
 
-#include <math.h>
-#include <assert.h>
-
-#include "portaudiocpp/PortAudioCpp.hxx"
+#include <portaudiocpp/PortAudioCpp.hxx>
 
 class Sine{
  public:

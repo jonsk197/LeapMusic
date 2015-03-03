@@ -73,12 +73,10 @@ void LeapListener::onFrame(const Controller& controller) {
 		{
 			std::lock_guard<std::mutex> lock(palmPositionLock);
 			palmPosition = hand.palmPosition();
-			std::cout << hand.palmPosition();
 		}
 		{
 			std::lock_guard<std::mutex> lock(frequencyLock);
-			frequency = Matte::linearToDb(hand.palmPosition().y); 
-			std::cout << frequency;
+			frequency = Matte::linearToDb(hand.palmPosition().y);
 		}
 		if (DEBUG) {
 		// Calculate the hand's pitch, roll, and yaw angles
@@ -177,15 +175,7 @@ void LeapListener::onFrame(const Controller& controller) {
 			if (DEBUG) {
 				std::cout << "Index finger and thumb touching. ";
 			}
-	}
 
-	// Get tools
-	const ToolList tools = frame.tools();
-	for (ToolList::const_iterator tl = tools.begin(); tl != tools.end(); ++tl) {
-		const Tool tool = *tl;
-		std::cout << std::string(2, ' ') <<	 "Tool, id: " << tool.id()
-							<< ", position: " << tool.tipPosition()
-							<< ", direction: " << tool.direction() << std::endl;
 	}
 }
 
@@ -248,4 +238,3 @@ Vector LeapListener::getPalmPosition(){
 	std::lock_guard<std::mutex> lock(palmPositionLock);
 	return palmPosition;
 }
-
