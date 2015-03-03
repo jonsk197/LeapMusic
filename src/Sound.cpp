@@ -1,4 +1,5 @@
 #include <math.h>
+#include <iostream>
 
 #include "Sound.hpp"
 #include "ContinousSine.hpp"
@@ -65,4 +66,8 @@ double Sound::frequencyOfNoteFromC0(double f) {
 ContinousSine& Sound::getContinousSine(void) {
 	ContinousSine& s = sine;
 	return s;
+}
+
+double Sound::handPositionToFrequency(double height){
+	return frequencyOfNoteFromC0((height - 10) / 6);
 }

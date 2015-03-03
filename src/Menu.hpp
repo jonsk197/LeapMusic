@@ -16,6 +16,7 @@ class Menu{
 
  private:
 	const float MENU_SIZE = 60;
+	const bool DEBUG = false;
 	int nrOfEntries = 0;
 	Leap::Vector menuCenter;
 };

@@ -6,12 +6,13 @@
 #include "Consumer.hpp"
 
 
-Consumer::Consumer(LeapListener& listen) : listener(listen) {
+Consumer::Consumer(LeapListener& listen, Sound& sound) :
+	listener(listen), sound(sound), playingNote(false) {
 		Entry entry1("entry1", [](void){std::cout << "Resume";});
 		menu.addEntry(entry1);
 
 		Entry entry2("entry2", [](void){std::cout << "play sound";});
-		menu.addEntry(entry2);	
+		menu.addEntry(entry2);
 
 		Entry entry3("entry3", [](void){std::cout << "change instrument";});
 		menu.addEntry(entry3);
@@ -35,8 +36,13 @@ void Consumer::startConsumeLoop() {
 		} else{
 			menu.closeMenu();
 		}
-		currentTone = listener.getTone();
-		playingNote = listener.isPlaying();
+
+		// If the user has switched to or from playing a note, tell that
+		// to the sound system.
+		if (playingNote != listener.isPlaying()){
+			playingNote = !playingNote;
+			sound.getContinousSine().playing = playingNote;
+		}
 		recording = listener.isRecording();
 		currentTone = listener.getFrequency();
 		sound.getContinousSine().setFrequency(currentTone);

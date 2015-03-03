@@ -35,15 +35,10 @@ float Matte::xSignedAngleTo(Vector hand, Vector menu, float angle){
 		return angle * RAD_TO_DEG;
 	}else{
 		return (2*M_PI - angle) * RAD_TO_DEG;
-	}	
+	}
 }
 
 float Matte::xyDistanceTo(Vector hand, Vector menu){
 	hand.z = menu.z;
 	return menu.distanceTo(hand);
-}
-
-float Matte::handpositionToFrequency(float x){
-	float f = x * SCALING_FACTOR;
-	return f;	
 }
