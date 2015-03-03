@@ -15,5 +15,8 @@ message (STATUS "Architecture is ${arch}")
 set (Leap_lib ${CMAKE_SOURCE_DIR}/LeapSDK/lib)
 find_package(PortAudio)
 find_package(PortMidi)
+find_package(OpenGL)
+find_package(FreeGLUT)
 
 add_subdirectory (src)
+add_subdirectory (src/graphics)
