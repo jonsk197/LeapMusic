@@ -6,11 +6,15 @@ A musical instrument built using the Leap Motion v2.
 
 Installation
 ============
+
 Download the source code of the project with git:
 ```bash
 git clone <repo url>
 cd leapMusic
 ```
+
+Dependencies
+------------
 
 Download the [Leap SDK](https://developer.leapmotion.com/) and move, copy or link the folder named LeapSDK into the project directory, the following example is of symlinking:
 
@@ -19,15 +23,27 @@ ln -s ~/Path/To/SDK/LeapSDK ./
 
 ```
 
-Then install the PortAudio library. On Ubuntu and other Debian derivatives it's:
+Then install the PortAudio, PortMIDI and FreeGLUT libraries.
+
+### Ubuntu, Mint and other Debian derivatives
+
 
 ```bash
-sudo apt-get install libportaudio-dev
+sudo apt-get install libportaudio-dev libportmidi-dev freeglut3-dev
 ```
-On MacOSX with homebrew it's:
+
+
+### On MacOSX with homebrew
+
 ```bash
-brew install portaudio
+brew install portaudio homebrew/X11/freeglut
 ```
+
+Unfortunately portmidi isn't packaged for homebrew which means you will have to download, build and install it on your own.
+
+
+Building
+--------
 
 Now you're ready to build the project:
 
@@ -48,4 +64,6 @@ Interaction
 
 2. Absolute position of the palm of the hand. This is the position used to modify the tone and also to navigate menus. This information is trivially retrieved from the SDK.
 
-3. The positioning of the fingers. Pressing the index finger against the thumb records a tone. Two fingers touch when the end position of their distal bones are about equal.
+3. Closing the hand and only pointing with the index finger plays a note.
+
+4. Closing the fingers completely into a fist records the sound.
