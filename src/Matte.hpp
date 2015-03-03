@@ -11,7 +11,6 @@ class Matte{
 	static bool fuzzyEquals(Vector a, Vector b, double epsilon);
 	static bool fuzzyAngleEquals(Vector a, Vector b, double epsilon);
 	static float xSignedAngleTo(Vector hand, Vector menu, float angle);
-	static float handpositionToFrequency(float x);
 	static float xyDistanceTo(Vector hand, Vector menu);
 private:
 	static constexpr float SCALING_FACTOR = 30;

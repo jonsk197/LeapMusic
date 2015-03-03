@@ -84,6 +84,13 @@ class Sound{
 	ContinousSine& getContinousSine(void);
 
 	/**
+	 * @brief Transform a hand position to a frequency.
+	 *
+	 * @return double The frequency of the tone.
+	 */
+	static double handPositionToFrequency(double height);
+
+	/**
 	 * Here follows the definition of the frequency of every musical
 	 * note in the european scale as a C++ float const.
 	 */

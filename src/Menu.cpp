@@ -24,11 +24,10 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 		int angleOfSectorDeg = (int)(360/nrOfEntries);
 		int sector = (int) (angleDeg/angleOfSectorDeg);
 
-  if(DEBUG) {
-    std::cout << angleDeg << "	 " << angleOfSectorDeg << "   " << sector << "	 "<< std::endl;
-  }
+		if(DEBUG) {
+			std::cout << angleDeg << "	 " << angleOfSectorDeg << "   " << sector << "	 "<< std::endl;
+		}
 		entries.at(sector).activateFunction();
-
 	}
 }
 

@@ -3,6 +3,7 @@
 
 #include <portaudiocpp/PortAudioCpp.hxx>
 #include <mutex>
+#include <atomic>
 
 class ContinousSine{
  public:
@@ -24,13 +25,24 @@ class ContinousSine{
 	 * the human ear.
 	 */
 	void setFrequency(double freq);
+
+	/**
+	 * @brief Get the frequency currently playing.
+	 *
+	 * @return double The frequency.
+	 */
 	double getFrequency();
 
+	/**
+	 * Whether or not the continous sine should be playing.
+	 */
+	std::atomic<bool> playing;
 
  private:
-	std::mutex tableSizeLock;
+	std::atomic<double> nextTableSize;
 	double tableSize;
 	int position;
+	float lastF;
 };
 
 #endif

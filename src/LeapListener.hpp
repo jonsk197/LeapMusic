@@ -19,7 +19,7 @@ class LeapListener : public Leap::Listener {
 	LeapListener(LeapListener const&);
 	LeapListener& operator=(const LeapListener& rhs);
 
-	LeapListener() = default;
+	LeapListener();
 
 	virtual void onInit(const Controller&);
 	virtual void onConnect(const Controller&);
@@ -39,14 +39,6 @@ class LeapListener : public Leap::Listener {
 	 * @return bool True if the menu is open.
 	 */
 	bool getMenuOpen();
-
-	/**
-	 * @brief getTone Get the frequency of the currently playing tone.
-	 *
-	 * @return double The frequency in Hz. Should range from 20 to
-	 * 20.000.
-	 */
-	double getTone();
 
 	/**
 	 * @brief Whether the player wants to output a tone or not.
@@ -78,9 +70,6 @@ class LeapListener : public Leap::Listener {
 	Vector getPalmPosition();
 
  private:
-	std::mutex toneLock;
-	double tone;
-
 	std::mutex menuLock;
 	bool menuOpen;
 

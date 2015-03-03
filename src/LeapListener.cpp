@@ -10,20 +10,31 @@
 
 using namespace Leap;
 
+LeapListener::LeapListener() :
+	menuOpen(false),
+	playing(false),
+	recording(false),
+	frequency(Sound::A4),
+	palmPosition(10, 10, 10) {
+
+}
+
 LeapListener::LeapListener(const LeapListener& from):
-	tone(from.tone),
 	menuOpen(from.menuOpen),
 	playing(from.playing),
-	recording(from.recording) {
+	recording(from.recording),
+	frequency(from.frequency),
+	palmPosition(from.palmPosition) {
 
 }
 
 LeapListener& LeapListener::operator=(const LeapListener& rhs) {
 	if (this != &rhs){
-		tone = rhs.tone;
 		menuOpen = rhs.menuOpen;
 		playing = rhs.playing;
 		recording = rhs.recording;
+		frequency = rhs.frequency;
+		palmPosition = rhs.palmPosition;
 	}
 	return *this;
 }
@@ -76,7 +87,7 @@ void LeapListener::onFrame(const Controller& controller) {
 		}
 		{
 			std::lock_guard<std::mutex> lock(frequencyLock);
-			frequency = Matte::handpositionToFrequency(hand.palmPosition().y); 
+			frequency = Sound::handPositionToFrequency(hand.palmPosition().y);
 		}
 		if (DEBUG) {
 		// Calculate the hand's pitch, roll, and yaw angles
@@ -212,12 +223,6 @@ bool LeapListener::getMenuOpen() {
 }
 
 
-double LeapListener::getTone() {
-	std::lock_guard<std::mutex> lock(toneLock);
-	return tone;
-}
-
-
 bool LeapListener::isRecording() {
 	std::lock_guard<std::mutex> lock(recordPlayingLock);
 	return recording;
@@ -229,10 +234,12 @@ bool LeapListener::isPlaying() {
 	return playing;
 }
 
+
 float LeapListener::getFrequency() {
 	std::lock_guard<std::mutex> lock(frequencyLock);
 	return frequency;
 }
+
 
 Vector LeapListener::getPalmPosition(){
 	std::lock_guard<std::mutex> lock(palmPositionLock);
