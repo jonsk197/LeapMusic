@@ -23,20 +23,20 @@ ln -s ~/Path/To/SDK/LeapSDK ./
 
 ```
 
-Then install the PortAudio, PortMIDI and FreeGLUT libraries.
+Then install the PortAudio, PortMIDI, FreeGLUT and GLEW libraries.
 
 ### Ubuntu, Mint and other Debian derivatives
 
 
 ```bash
-sudo apt-get install libportaudio-dev libportmidi-dev freeglut3-dev
+sudo apt-get install libportaudio-dev libportmidi-dev freeglut3-dev libglew-dev
 ```
 
 
 ### On MacOSX with homebrew
 
 ```bash
-brew install portaudio homebrew/X11/freeglut
+brew install portaudio homebrew/X11/freeglut glew
 ```
 
 Unfortunately portmidi isn't packaged for homebrew which means you will have to download, build and install it on your own.
