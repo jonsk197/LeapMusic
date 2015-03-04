@@ -3,7 +3,7 @@
 
 #include <portaudiocpp/PortAudioCpp.hxx>
 
-#include "ContinousSine.hpp"
+#include "Mixer.hpp"
 
 class Sound{
  public:
@@ -21,12 +21,12 @@ class Sound{
 	 * @brief Entry point for a thread which plays a continous sine
 	 * wave.
 	 */
-	static void continousSineThreadEntry(Sound& sound);
+	static void MixerThreadEntry(Sound& sound);
 
 	/**
 	 * @brief Starts the playback of an endless sine wave.
 	 */
-	void startContinousSine(void);
+	void startMixer(void);
 
 	/**
 	 * @brief Returns the frequency of a musical note with an offset n
@@ -79,9 +79,9 @@ class Sound{
 	 * @brief Get a reference to this Sound systemes instance of a
 	 * continous sine object.
 	 *
-	 * @return ContinousSine& A reference to the ContinousSine.
+	 * @return Mixer& A reference to the Mixer.
 	 */
-	ContinousSine& getContinousSine(void);
+	Mixer& getMixer(void);
 
 	/**
 	 * @brief Transform a hand position to a frequency.
@@ -255,7 +255,7 @@ class Sound{
   portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
-	ContinousSine sine;
+	Mixer sine;
 };
 
 #endif

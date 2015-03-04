@@ -41,11 +41,13 @@ void Consumer::startConsumeLoop() {
 		// to the sound system.
 		if (playingNote != listener.isPlaying()){
 			playingNote = !playingNote;
-			sound.getContinousSine().playing = playingNote;
+			sound.getMixer().playing = playingNote;
 		}
 		recording = listener.isRecording();
 		currentTone = listener.getFrequency();
-		sound.getContinousSine().setFrequency(currentTone);
+		//Implement the mixing part hear. Save the old sine and add it to the other includeing the curentTone.
+
+		sound.getMixer().setFrequency(currentTone);
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
 }

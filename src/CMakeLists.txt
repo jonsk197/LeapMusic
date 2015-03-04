@@ -1,5 +1,5 @@
 add_executable (LeapMusic Main.cpp LeapListener.cpp Menu.cpp Entry.cpp Consumer.cpp)
-add_library (Sound Sound.cpp Sine.cpp ContinousSine.cpp)
+add_library (Sound Sound.cpp Sine.cpp Mixer.cpp)
 add_library (Matte Matte.cpp)
 target_link_libraries (Sound ${PORTAUDIO_LIBRARIES})
 target_link_libraries (LeapMusic Matte Sound)
