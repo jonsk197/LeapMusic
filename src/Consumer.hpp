@@ -16,18 +16,19 @@ class Consumer{
 	 *
 	 * @return Consumer A new instance of the Consumer class.
 	 */
-	Consumer(LeapListener& listen, Sound& sound);
+	Consumer(LeapListener& listen, Sound& sound, Mixer& mixer);
 
 	/**
 	 * @brief Starts the loop which consumes data from the
 	 * LeapListener specified in the constructor.
 	 */
 	void startConsumeLoop();
-	static void threadEntry(LeapListener& listener, Sound& sound);
+	static void threadEntry(LeapListener& listener, Sound& sound, Mixer& mixer);
 
  private:
 	LeapListener& listener;
 	Sound& sound;
+	Mixer& mixer;
 	double currentTone;
 	bool menuOpen;
 	bool playingNote;

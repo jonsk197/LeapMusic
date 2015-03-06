@@ -4,11 +4,13 @@
 #include <iostream>
 #include <portaudiocpp/PortAudioCpp.hxx>
 #include <mutex>
+#include <vector>
 #include <atomic>
 
 class Mixer{
  public:
 	Mixer(float frequency);
+	Mixer();
 
 	/**
 	 * @brief The function which should be hooked into PortAudio.
@@ -27,6 +29,7 @@ class Mixer{
 	 */
 	void setFrequency(double freq);
 
+
 	/**
 	 * @brief Get the frequency currently playing.
 	 *
@@ -35,19 +38,35 @@ class Mixer{
 	double getFrequency();
 
 	/**
-	 * Whether or not the continous sine should be playing.
+	 * Whether or not the mixer should be playing.
 	 */
 	std::atomic<bool> playing;
 
 	/**
+	 * Whether or not the mixer should be recodring.
+	 */
+	std::atomic<bool> recording;
+
+	/**
 	*This vector contains all the voices that has been storied. The voices is is 4 sec long had stories 4*48000k of sample.
 	*/
+	std::vector< std::vector<float> > playbackVector;
+
+	void startOrStopRecording(bool rec);
+
+	bool recordingSwitch = false;
 
  private:
 	std::atomic<double> nextTableSize;
 	double tableSize;
-	int position;
+	int positionInSine;
+	int vectorPosition = 0;
+	int recordingPosition = 0;
+	int startRecordingPosition = 0;
 	float lastF;
+	static constexpr float VECTOR_WIDTH = 191999;
+	float nrOfVectors = 0;
+	std::vector<float> v; 
 };
 
 #endif

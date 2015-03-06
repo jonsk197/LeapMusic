@@ -4,23 +4,24 @@
 
 #include "LeapListener.hpp"
 #include "Consumer.hpp"
+#include "Mixer.hpp"
 
 
-Consumer::Consumer(LeapListener& listen, Sound& sound) :
-	listener(listen), sound(sound), playingNote(false) {
+Consumer::Consumer(LeapListener& listen, Sound& sound, Mixer& mixer) :
+	listener(listen), sound(sound), mixer(mixer), playingNote(false) {
 		Entry entry1("entry1", [](void){std::cout << "Resume";});
 		menu.addEntry(entry1);
 
-		Entry entry2("entry2", [](void){std::cout << "play sound";});
+		Entry entry2("entry2", [](void){std::cout << "Play sound";});
 		menu.addEntry(entry2);
 
-		Entry entry3("entry3", [](void){std::cout << "change instrument";});
+		Entry entry3("entry3", [](void){std::cout << "Change instrument";});
 		menu.addEntry(entry3);
 
 		Entry entry4("entry4", [](void){std::cout << "Drop the base";});
 		menu.addEntry(entry4);
 
-		Entry entry5("entry5", [](void){std::cout << "options";});
+		Entry entry5("entry5", [](void){std::cout << "Options";});
 		menu.addEntry(entry5);
 
 		Entry entry6("entry6", [](void){exit(0);});
@@ -43,7 +44,12 @@ void Consumer::startConsumeLoop() {
 			playingNote = !playingNote;
 			sound.getMixer().playing = playingNote;
 		}
-		recording = listener.isRecording();
+
+		if(recording != listener.isRecording()){
+			recording = !recording;
+			mixer.startOrStopRecording(recording);
+		}
+
 		currentTone = listener.getFrequency();
 		//Implement the mixing part hear. Save the old sine and add it to the other includeing the curentTone.
 
@@ -52,7 +58,7 @@ void Consumer::startConsumeLoop() {
 	}
 }
 
-void Consumer::threadEntry(LeapListener& listener, Sound& sound) {
-	Consumer* consumerPointer = new Consumer(listener, sound);
+void Consumer::threadEntry(LeapListener& listener, Sound& sound, Mixer& mixer) {
+	Consumer* consumerPointer = new Consumer(listener, sound, mixer);
 	return consumerPointer->startConsumeLoop();
 }
