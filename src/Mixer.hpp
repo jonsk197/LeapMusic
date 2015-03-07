@@ -54,10 +54,16 @@ class Mixer{
 
 	void startOrStopRecording(bool rec);
 
-	bool recordingSwitch = false;
+	void deleteLastTrack();
+
+	void changePlayBack();
+
+	void changeBeatPlaying();
 
  private:
 	std::atomic<double> nextTableSize;
+	std::atomic<bool> playBackBool;
+	std::atomic<bool> playingBeat;
 	double tableSize;
 	int positionInSine;
 	int vectorPosition = 0;
@@ -66,7 +72,9 @@ class Mixer{
 	float lastF;
 	static constexpr float VECTOR_WIDTH = 191999;
 	float nrOfVectors = 0;
+	std::vector<float> commonTime;
 	std::vector<float> v; 
+
 };
 
 #endif

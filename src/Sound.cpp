@@ -21,7 +21,7 @@ void Sound::playSine(float length, float frequency) {
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
 							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
-							 paClipOff);
+							 paNoFlag);
 	portaudio::MemFunCallbackStream<Mixer>
 		streamBeep(paramsBeep, sine, &Mixer::PACallback);
 
@@ -39,7 +39,7 @@ void Sound::startMixer(void) {
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
 							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
-							 paClipOff);
+							 paNoFlag);
 	portaudio::MemFunCallbackStream<Mixer>
 		streamBeep(paramsBeep, sine, &Mixer::PACallback);
 

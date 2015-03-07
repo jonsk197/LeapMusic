@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 	Controller controller;
 	Sound sound;
 	LeapListener listener;
-	Mixer mixer;
+
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
 	std::thread consumerThread(&Consumer::threadEntry,
-														 std::ref(listener), std::ref(sound), std::ref(mixer));
+														 std::ref(listener), std::ref(sound));
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);

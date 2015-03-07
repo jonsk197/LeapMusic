@@ -15,3 +15,6 @@ std::string Entry::getTitle(){
 	return title;
 }
 
+void Entry::activate(){
+	activateFunction();
+}

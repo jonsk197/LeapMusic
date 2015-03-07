@@ -12,9 +12,11 @@ public:
 	Entry(std::string name, std::function<void(void)> activateFunction);
 	void setTitle(std::string str);
 	std::string getTitle();
-	std::function<void(void)> activateFunction;
+	void activate();
+
 private:
 	std::string title;
+	std::function<void(void)> activateFunction;
 };
 
 #endif
