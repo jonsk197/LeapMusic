@@ -862,7 +862,7 @@ void DrawModel(Model *m, GLuint program, char* vertexVariableName, char* normalV
 	if (m != NULL)
 	{
 		GLint loc;
-
+		fprintf(stderr, "model: %p, vao: %u, program %u \n", m, &m->vao, program);
 		glBindVertexArray(m->vao);	// Select VAO
 
 		glBindBuffer(GL_ARRAY_BUFFER, m->vb);
@@ -954,11 +954,7 @@ void DrawWireframeModel(Model *m, GLuint program, char* vertexVariableName, char
 	}
 }
 
-void BuildModelVAO2(Model *m/*,
-			GLuint program,
-			char* vertexVariableName,
-			char* normalVariableName,
-			char* texCoordVariableName*/)
+void BuildModelVAO2(Model *m)
 {
 	glGenVertexArrays(1, &m->vao);
 	glGenBuffers(1, &m->vb);
@@ -1004,8 +1000,7 @@ Model* LoadModelPlus(char* name/*,
 
 	m = LoadModel(name);
 
-	BuildModelVAO2(m/*, program, vertexVariableName, normalVariableName, texCoordVariableName*/);
-
+	BuildModelVAO2(m);
 	return m;
 }
 

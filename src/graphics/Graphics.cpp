@@ -29,30 +29,29 @@ const GLfloat Graphics::viewFrustum[] =
 GLuint Graphics::handProgram = 0;
 Model* Graphics::bunny = NULL;
 
+
 void Graphics::init(int argc, char** argv) {
 	int* pargc = &argc;
 	glutInit(pargc, argv);
 	glutInitContextVersion(3, 2);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
-	glutInitWindowSize(400, 300);
+	glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH);
+	glutInitWindowSize(300, 200);
 	glutCreateWindow("Leap Music!");
 
-	std::cout << "Before init" << std::endl;
+	std::cout << "Before GLEW init" << std::endl;
+	glewExperimental = GL_TRUE;
+	GLenum glew_status = glewInit();
+	if (glew_status != GLEW_OK) {
+		std::cout << glewGetErrorString(glew_status) << std::endl;
+	}
 
-  // Extension wrangler initialising
-  GLenum glew_status = glewInit();
-  if (glew_status != GLEW_OK) {
-		std::cout << "Error: " << glewGetErrorString(glew_status) << std::endl;
-		exit(11);
-  }
-	std::cout << "After main loop" << initResources() << std::endl;
+	if (initResources()) {
 
-	if (true) {
-    /* We can display it if everything goes OK */
-    glutDisplayFunc(onDisplay);
-
-    glutMainLoop();
-  }
+		/* We can display it if everything goes OK */
+		glutDisplayFunc(onDisplay);
+		glutMainLoop();
+		std::cout << "After main loop" << std::endl;
+	}
 
 	// Upon exiting the main loop;
 	freeResources();
@@ -62,18 +61,22 @@ void Graphics::init(int argc, char** argv) {
 int Graphics::initResources(void) {
 	handProgram = loadShaders("./src/graphics/shaders/hand.vert",
 	                          "./src/graphics/shaders/hand.frag");
+	std::cout << handProgram << std::endl;
 	bunny = LoadModelPlus("./src/graphics/models/bunnyplus.obj");
+
 	std::cout << "In init" << std::endl;
 	glUniformMatrix4fv(glGetUniformLocation(handProgram, "viewFrustum"),
-										 1, GL_TRUE, viewFrustum);
+	                   1, GL_TRUE, viewFrustum);
+	glUniformMatrix4fv(glGetUniformLocation(handProgram, "lookMatrix"),
+										 1, GL_TRUE, lookMatrix.m);
 
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(1.0, 0.0, 0.0, 0.0);
 	glutTimerFunc(16, &Graphics::onTimer, 0);
 	return 1;
 }
 
 void Graphics::onDisplay(void) {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(handProgram);
 	drawObject(transHand, bunny, handProgram);
 }

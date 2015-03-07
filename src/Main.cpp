@@ -4,6 +4,9 @@
 #include <thread>
 #include <chrono>
 
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
 #include "../include/Leap.h"
 #include "LeapListener.hpp"
 #include "Matte.hpp"
