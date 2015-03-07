@@ -29,7 +29,7 @@ Consumer::Consumer(LeapListener& listen, Sound& sound) :
 
 void Consumer::startConsumeLoop() {
 	while (true) {
-		menuOpen = listener.getMenuOpen();
+		menuOpen = listener.menuOpen;
 		if(menuOpen){
 			palmPosition = listener.getPalmPosition();
 			menu.openOrUpdateMenu(palmPosition);
@@ -39,12 +39,12 @@ void Consumer::startConsumeLoop() {
 
 		// If the user has switched to or from playing a note, tell that
 		// to the sound system.
-		if (playingNote != listener.isPlaying()){
+		if (playingNote != listener.playing){
 			playingNote = !playingNote;
 			sound.getContinousSine().playing = playingNote;
 		}
-		recording = listener.isRecording();
-		currentTone = listener.getFrequency();
+		recording = listener.recording;
+		currentTone = listener.frequency;
 		sound.getContinousSine().setFrequency(currentTone);
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
