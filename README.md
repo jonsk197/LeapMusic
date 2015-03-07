@@ -29,7 +29,7 @@ Then install the PortAudio, PortMIDI, FreeGLUT and GLEW libraries.
 
 
 ```bash
-sudo apt-get install libportaudio-dev libportmidi-dev freeglut3-dev libglew-dev
+sudo apt-get install libportaudio19-dev libportmidi-dev freeglut3-dev libglew-dev libxmu-dev libxi-dev
 ```
 
 
