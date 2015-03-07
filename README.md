@@ -67,8 +67,3 @@ Interaction
 3. Closing the hand and only pointing with the index finger plays a note.
 
 4. Closing the fingers completely into a fist records the sound.
-
-
-Developer notes
-===============
-If you are working on shaders or models, note that CMake won't copy these folders into the destination directory if the project was up to date, i.e. nothing had to be compiled. So you have to modify a _source code_ file for the models and shaders to be copied.
