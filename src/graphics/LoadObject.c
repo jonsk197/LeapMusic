@@ -40,16 +40,16 @@ typedef struct Mesh
 
 
 
-#define vToken				1
-#define vnToken			 2
-#define vtToken			 3
-#define kReal				 4
-#define kInt					5
-#define tripletToken	6
-#define fToken				7
-#define crlfToken		 8
-#define kEOF					9
-#define kUnknown		 10
+#define vToken        1
+#define vnToken       2
+#define vtToken       3
+#define kReal         4
+#define kInt          5
+#define tripletToken  6
+#define fToken        7
+#define crlfToken     8
+#define kEOF          9
+#define kUnknown      10
 
 
 static FILE *fp;
@@ -862,7 +862,6 @@ void DrawModel(Model *m, GLuint program, char* vertexVariableName, char* normalV
 	if (m != NULL)
 	{
 		GLint loc;
-		fprintf(stderr, "model: %p, vao: %u, program %u \n", m, &m->vao, program);
 		glBindVertexArray(m->vao);	// Select VAO
 
 		glBindBuffer(GL_ARRAY_BUFFER, m->vb);
@@ -885,7 +884,7 @@ void DrawModel(Model *m, GLuint program, char* vertexVariableName, char* normalV
 				glEnableVertexAttribArray(loc);
 			}
 			else
-				fprintf(stderr, "DrawModel warning: '%s' not found in shader!\n", normalVariableName);
+				fprintf(stderr, "DrawModel warning: '%s' not found in shader! loc: %i\n", normalVariableName, loc);
 		}
 
 		// VBO for texture coordinate data NEW for 5b

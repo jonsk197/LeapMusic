@@ -1,6 +1,8 @@
 #ifndef LEAPMUSIC_GRAPHICS
 #define LEAPMUSIC_GRAPHICS
 
+#include <atomic>
+
 #include <GL/glew.h>
 
 #include "VectorUtils3.h"
@@ -9,6 +11,10 @@
 class Graphics {
 public:
 	static void init(int argc, char** argv);
+
+	static std::atomic<float> handX;
+	static std::atomic<float> handY;
+
 private:
 	static int initResources(void);
 	static void freeResources(void);
@@ -16,8 +22,10 @@ private:
 	static void onTimer(int);
 	static void drawObject(mat4, Model*, GLuint);
 
-	static GLuint handProgram;
+	static GLuint program;
+	static GLuint grass;
 	static Model* bunny;
+	static mat4   transHand;
 
 	static constexpr GLfloat near = 1.0;
 	static constexpr GLfloat far = 300.0;
@@ -30,7 +38,6 @@ private:
   static const vec3 cameraTarget;
 	static const vec3 cameraNormal;
   static const mat4 lookMatrix;
-	static const mat4 transHand;
 };
 
 #endif
