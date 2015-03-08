@@ -65,7 +65,7 @@ double Sound::frequencyOfNoteFromC0(double f) {
 
 
 int Sound::toneFromC0(double frequency) {
-	return 2 * log(frequency/C0 - 2);
+	return 12 * log(frequency/C0 - 2);
 }
 
 

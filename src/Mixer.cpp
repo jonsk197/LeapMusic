@@ -59,19 +59,20 @@ int Mixer::PACallback(const void* inputBuffer,
 	float **out = static_cast<float **>(outputBuffer);
 
 	for (unsigned int i = 0; i < framesPerBuffer; i++) {
+		positionInSine++;
 		float amplitude = 0;
 
 		if (playing) {
-			if (positionInSine >= toneLookupTables[tone].size())
-				positionInSine -= toneLookupTables[tone].size();
+			std::cout << tone << std::endl;
+			if (positionInSine >= toneLookupTables.at(tone).size())
+				positionInSine = 0;
 
-			amplitude += toneLookupTables[tone][positionInSine];
-			positionInSine++;
+			amplitude += toneLookupTables[tone].at(positionInSine);
 
 			if(recording) {
 				samplesRecorded++;
 				if(samplesRecorded >= TRACK_NR_SAMPLES)
-					samplesRecorded -= TRACK_NR_SAMPLES;
+					samplesRecorded = 0;
 
 				currentTrack[currentTrackPosition] = amplitude;
 
@@ -103,7 +104,6 @@ int Mixer::PACallback(const void* inputBuffer,
 			tone = nextTone;
 			positionInSine = 0;
 		}
-
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
@@ -112,6 +112,7 @@ int Mixer::PACallback(const void* inputBuffer,
 
 void Mixer::setFrequency(double freq) {
 	nextTone = Sound::toneFromC0(freq);
+	std::cout << "frequency: " << freq << " tone: " << nextTone << '\n';
 }
 
 void Mixer::setToneFromC0(int n) {

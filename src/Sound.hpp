@@ -256,7 +256,7 @@ class Sound{
 	static constexpr float B8 =  7902.13f;
 
 	static constexpr double SAMPLE_RATE = 48000.0f;
-  static const int FRAMES_PER_BUFFER = 512;
+  static const int FRAMES_PER_BUFFER = 1024;
 
  private:
   portaudio::AutoSystem autoSys;

@@ -28,7 +28,6 @@ class Consumer{
  private:
 	LeapListener& listener;
 	Sound& sound;
-	double currentTone;
 	bool menuOpen;
 	bool playingNote;
 	bool recording;
