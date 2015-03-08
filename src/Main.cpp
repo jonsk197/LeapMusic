@@ -4,11 +4,15 @@
 #include <thread>
 #include <chrono>
 
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
 #include "../include/Leap.h"
 #include "LeapListener.hpp"
 #include "Matte.hpp"
 #include "Sound.hpp"
 #include "Consumer.hpp"
+#include "graphics/Graphics.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
@@ -23,13 +27,16 @@ int main(int argc, char** argv) {
 
 	/* The thread which plays a continous sine wave. */
 	std::thread soundThread(&Sound::continousSineThreadEntry,
-													std::ref(sound));
+	                        std::ref(sound));
 
 	/* The consumer takes action on the data produced by the
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
 	std::thread consumerThread(&Consumer::threadEntry,
-														 std::ref(listener), std::ref(sound));
+	                           std::ref(listener), std::ref(sound));
+
+	// Fire up ze graphics engines!
+	Graphics::init(argc, argv);
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
