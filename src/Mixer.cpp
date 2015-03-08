@@ -10,7 +10,7 @@
 #include "Sound.hpp"
 
 
-Mixer::Mixer(float frequency = Sound::A4) :
+Mixer::Mixer(float frequency) :
   beatTrack(TRACK_NR_SAMPLES, 0),
 	currentTrack(TRACK_NR_SAMPLES, 0) {
 	setFrequency(frequency);
@@ -43,6 +43,8 @@ Mixer::Mixer(float frequency = Sound::A4) :
 		toneLookupTables.push_back(table);
 	}
 }
+
+Mixer::Mixer() : Mixer(Sound::A4) {}
 
 
 int Mixer::PACallback(const void* inputBuffer,

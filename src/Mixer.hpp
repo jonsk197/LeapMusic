@@ -75,7 +75,7 @@ class Mixer{
 	unsigned int currentTrackPosition = 0;
 	unsigned int samplesRecorded = 0;
 	unsigned int startRecordingPosition = 0;
-	std::vector<float> beatTrack {TRACK_NR_SAMPLES};
+	std::vector<float> beatTrack;
 	std::vector<float> currentTrack;
 
 	/**
