@@ -63,6 +63,12 @@ double Sound::frequencyOfNoteFromC0(double f) {
 	return C0 * pow(2, f/12.f);
 }
 
+
+int Sound::toneFromC0(double frequency) {
+	return 2 * log(frequency/C0 - 2);
+}
+
+
 Mixer& Sound::getMixer(void) {
 	Mixer& s = sine;
 	return s;

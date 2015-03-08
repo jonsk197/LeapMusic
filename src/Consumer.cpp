@@ -47,7 +47,6 @@ void Consumer::startConsumeLoop() {
 			sound.getMixer().startOrStopRecording(recording);
 		}
 
-
 		currentTone = listener.getFrequency();
 		//Implement the mixing part hear. Save the old sine and add it to the other includeing the curentTone.
 
