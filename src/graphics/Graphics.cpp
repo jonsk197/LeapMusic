@@ -64,16 +64,16 @@ void Graphics::init(int argc, char** argv) {
 
 
 int Graphics::initResources(void) {
-	program = loadShaders("./src/graphics/shaders/main.vert",
-	                          "./src/graphics/shaders/main.frag");
-	bunny = LoadModelPlus("./src/graphics/models/bunnyplus.obj");
+	program = loadShaders((char*)"./src/graphics/shaders/main.vert",
+												(char*)"./src/graphics/shaders/main.frag");
+	bunny = LoadModelPlus((char*)"./src/graphics/models/bunnyplus.obj");
 	glUniformMatrix4fv(glGetUniformLocation(program, "viewFrustum"),
 	                   1, GL_TRUE, viewFrustum);
 	glUniformMatrix4fv(glGetUniformLocation(program, "lookMatrix"),
 										 1, GL_TRUE, lookMatrix.m);
 
 	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
-	LoadTGATextureSimple("./src/graphics/textures/grass.tga", &grass);
+	LoadTGATextureSimple((char*)"./src/graphics/textures/grass.tga", &grass);
 	glBindTexture(GL_TEXTURE_2D, grass);
 
 	glUseProgram(program);
@@ -101,7 +101,8 @@ void Graphics::freeResources(void) {
 void Graphics::drawObject(mat4 transform, Model* model, GLuint p) {
 	glUniformMatrix4fv(glGetUniformLocation(p, "transform"),
 	                   1, GL_TRUE, transform.m);
-	DrawModel(model, p, "vertPosition", "vertNormal", "vertTexCoord");
+	DrawModel(model, p, (char*)"vertPosition",
+						(char*)"vertNormal", (char*)"vertTexCoord");
 	printError("Graphics::drawObject()");
 }
 
