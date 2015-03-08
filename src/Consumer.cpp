@@ -5,7 +5,7 @@
 #include "LeapListener.hpp"
 #include "Consumer.hpp"
 #include "Mixer.hpp"
-
+#include "graphics/Graphics.hpp"
 
 Consumer::Consumer(LeapListener& listen, Sound& sound) :
 	listener(listen), sound(sound), playingNote(false), recording(false) {
@@ -27,9 +27,13 @@ Consumer::Consumer(LeapListener& listen, Sound& sound) :
 
 void Consumer::startConsumeLoop() {
 	while (true) {
+		palmPosition = listener.getPalmPosition();
+
+		Graphics::handX = palmPosition.x;
+		Graphics::handY = palmPosition.y;
+
 		menuOpen = listener.getMenuOpen();
 		if(menuOpen){
-			palmPosition = listener.getPalmPosition();
 			menu.openOrUpdateMenu(palmPosition);
 		} else{
 			menu.close();

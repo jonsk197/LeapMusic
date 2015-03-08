@@ -4,19 +4,22 @@
 #include <thread>
 #include <chrono>
 
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
 #include "../include/Leap.h"
 #include "LeapListener.hpp"
 #include "Matte.hpp"
 #include "Sound.hpp"
 #include "mixer.hpp"
 #include "Consumer.hpp"
+#include "graphics/Graphics.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
 	Controller controller;
 	Sound sound;
 	LeapListener listener;
-
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
@@ -31,7 +34,10 @@ int main(int argc, char** argv) {
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
 	std::thread consumerThread(&Consumer::threadEntry,
-														 std::ref(listener), std::ref(sound));
+	                           std::ref(listener), std::ref(sound));
+
+	// Fire up ze graphics engines!
+	Graphics::init(argc, argv);
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
