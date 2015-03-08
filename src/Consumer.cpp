@@ -28,8 +28,8 @@ Consumer::Consumer(LeapListener& listen, Sound& sound) :
 void Consumer::startConsumeLoop() {
 	while (true) {
 		menuOpen = listener.menuOpen;
+		palmPosition = listener.getPalmPosition();
 		if(menuOpen){
-			palmPosition = listener.getPalmPosition();
 			menu.openOrUpdateMenu(palmPosition);
 		} else{
 			menu.close();
@@ -41,9 +41,14 @@ void Consumer::startConsumeLoop() {
 			playingNote = !playingNote;
 			sound.getMixer().playing = playingNote;
 		}
+
+		if(recording != listener.recording){
+			recording = !recording;
+			sound.getMixer().startOrStopRecording(recording);
+		}
+		
 		recording = listener.recording;
-		currentTone = listener.frequency;
-		sound.getMixer().setFrequency(currentTone);
+		sound.getMixer().setToneFromC0(palmPosition.y / 3);
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
 }

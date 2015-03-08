@@ -5,60 +5,46 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
-#include <execinfo.h>
 
 #include "Mixer.hpp"
 #include "Sound.hpp"
 
-Mixer::Mixer() :
-	playing(false), recording(false), tableSize(100), positionInSine(0), lastF(1.f){
-	setFrequency(100);
-	commonTime.resize(VECTOR_WIDTH);
-	std::fill(commonTime.begin(), commonTime.end(), 0);
-	
-	int i = 0;
-	for (float j = 0 ; j <= 1; j = j +0.005){
-
-		commonTime.at(0 	 + i) = j;
-		commonTime.at(46000  + i) = j;
-		commonTime.at(96000  + i) = j;
-		commonTime.at(144000 + i) = j;
-		i++;
-	}
-
-	for (float k = 1; k >= 0; k = k - 0.005){
-		commonTime.at(0 	 + i) = k;
-		commonTime.at(46000  + i) = k;
-		commonTime.at(96000  + i) = k;
-		commonTime.at(144000 + i) = k;
-		i++;
-	}
-}
 
 Mixer::Mixer(float frequency) :
-	playing(false), recording(false), tableSize(100), positionInSine(0), lastF(1.f){
+  beatTrack(TRACK_NR_SAMPLES, 0),
+	currentTrack(TRACK_NR_SAMPLES, 0) {
 	setFrequency(frequency);
-	commonTime.resize(VECTOR_WIDTH);
-	std::fill(commonTime.begin(), commonTime.end(), 0);
-	
-	int i = 0;
-	for (float j = 0 ; j <= 1; j = j +0.005){
 
-		commonTime.at(0 	 + i) = j;
-		commonTime.at(46000  + i) = j;
-		commonTime.at(96000  + i) = j;
-		commonTime.at(144000 + i) = j;
+	int i = 0;
+	for (float j = 0; j <= 1; j += 0.005) {
+		beatTrack.at(0 	    + i) = j;
+		beatTrack.at(46000  + i) = j;
+		beatTrack.at(96000  + i) = j;
+		beatTrack.at(144000 + i) = j;
+		i++;
+	}
+	for (float k = 1; k >= 0; k -= 0.005) {
+		beatTrack.at(0      + i) = k;
+		beatTrack.at(46000  + i) = k;
+		beatTrack.at(96000  + i) = k;
+		beatTrack.at(144000 + i) = k;
 		i++;
 	}
 
-	for (float k = 1; k >= 0; k = k - 0.005){
-		commonTime.at(0 	 + i) = k;
-		commonTime.at(46000  + i) = k;
-		commonTime.at(96000  + i) = k;
-		commonTime.at(144000 + i) = k;
-		i++;
+	// There are ~ 100 notes between A0 and A8
+	for (int tone = 0; tone < 100; tone++ ) {
+		double frequency = Sound::frequencyOfNoteFromC0(tone);
+		double tableSize = Sound::SAMPLE_RATE / frequency;
+		std::vector<float> table(ceil(tableSize), 0);
+		for (int position = 0; position < tableSize; position++) {
+			table[position] = (float) sin(((double)position / tableSize)*M_PI*2.);
+		}
+		toneLookupTables.push_back(table);
 	}
 }
+
+Mixer::Mixer() : Mixer(Sound::A4) {}
+
 
 int Mixer::PACallback(const void* inputBuffer,
                               void* outputBuffer,
@@ -71,100 +57,92 @@ int Mixer::PACallback(const void* inputBuffer,
 	(void) inputBuffer;
 	float **out = static_cast<float **>(outputBuffer);
 
-	if (true) {
-		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-			float f = (float) sin(((float)positionInSine / tableSize)*M_PI*2.);
-			float playBack = 0;
+	for (unsigned int i = 0; i < framesPerBuffer; i++) {
+		positionInSine++;
+		float amplitude = 0;
 
-			if(playing){
-				playBack = playBack + f;
-			}
-
-			if (playingBeat){
-				playBack = playBack + commonTime[vectorPosition];
-			}
-
-			if (playBackBool && vectorPosition >= 1){
-				for (int j = 0; j < nrOfVectors; ++j) {
-					playBack = playBack + playbackVector[j][vectorPosition];				
-				}
-			}
-
-			if (recording) {
-				if(recordingPosition <= VECTOR_WIDTH){
-					recordingPosition++;
-					v.at(vectorPosition) = f;
-				}
-			}
-
-			if(vectorPosition == VECTOR_WIDTH){
-				vectorPosition = 0; 
-			}else{
-				vectorPosition++;
-			}
-
-			if (lastF > 0 && f < 0) {
-				tableSize = nextTableSize;
+		if (playing) {
+			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
-			}
 
-			out[0][i] = playBack;
-			out[1][i] = playBack;
-			positionInSine++;
-			lastF = f;
+			amplitude += toneLookupTables[tone].at(positionInSine);
 
-		
-			if (recording) {
-				if (vectorPosition == startRecordingPosition){
-					playbackVector.push_back(v);
-					recordingPosition = 0;
-					nrOfVectors++;
-					std::fill(v.begin(), v.end(), 0);
+			if(recording) {
+				samplesRecorded++;
+				if(samplesRecorded >= TRACK_NR_SAMPLES)
+					samplesRecorded = 0;
+
+				currentTrack[currentTrackPosition] = amplitude;
+
+				if (currentTrackPosition == startRecordingPosition){
+					playbackVector.push_back(currentTrack);
+					samplesRecorded = 0;
+					std::fill(currentTrack.begin(), currentTrack.end(), 0);
 				}
-			}				
+			}
 		}
+
+		if (playingBeat)
+			amplitude += beatTrack[currentTrackPosition];
+
+		if (playingRecorded) {
+			for (unsigned int j = 0; j < playbackVector.size(); ++j) {
+				amplitude = amplitude + playbackVector[j][currentTrackPosition];
+			}
+		}
+
+		if(currentTrackPosition == TRACK_NR_SAMPLES){
+			currentTrackPosition = 0;
+		}else{
+			currentTrackPosition++;
+		}
+		tone = nextTone;
+		if (toneLookupTables[tone][positionInSine] > 0 &&
+				toneLookupTables[tone][positionInSine - 1] < 0 ) {	
+			positionInSine = 0;
+		}
+
+		out[0][i] = amplitude;
+		out[1][i] = amplitude;
 	}
 	return paContinue;
 }
 
-void Mixer::setFrequency(double freq){
-	nextTableSize = Sound::SAMPLE_RATE / freq;
+void Mixer::setFrequency(double freq) {
+	nextTone = Sound::toneFromC0(freq);
+	std::cout << "frequency: " << freq << " tone: " << nextTone << '\n';
 }
 
-void Mixer::startOrStopRecording(bool rec){
+void Mixer::setToneFromC0(int n) {
+	nextTone = n;
+}
 
+void Mixer::startOrStopRecording(bool rec) {
 	if(rec != recording){
 		recording = rec;
 
-		if(rec == false){
-			playbackVector.push_back(v);
-			nrOfVectors++;
-			std::fill(v.begin(), v.end(), 0);			
+		if(rec == false) {
+			playbackVector.push_back(currentTrack);
+			std::fill(currentTrack.begin(), currentTrack.end(), 0);
 		}
-
-		if(rec == true){
-			startRecordingPosition = vectorPosition;
-			v.resize(VECTOR_WIDTH);
-			std::fill(v.begin(), v.end(), 0); 
-
-		}
+		else
+			startRecordingPosition = currentTrackPosition;
 	}
 }
 
-void Mixer::deleteLastTrack(){
-	if (nrOfVectors > 1){
+void Mixer::deleteLastTrack() {
+	if (playbackVector.size() >= 1) {
 		playbackVector.pop_back();
-		nrOfVectors--;
 	}
 }
 
-void Mixer::changePlayBack(){
-	playBackBool = !playBackBool;
+void Mixer::changePlayBack() {
+	playingRecorded = !playingRecorded;
 }
 
-void Mixer::changeBeatPlaying(){
+void Mixer::changeBeatPlaying() {
 	playingBeat = !playingBeat;
 }
 double Mixer::getFrequency() {
-	return Sound::SAMPLE_RATE / nextTableSize;
+	return Sound::frequencyOfNoteFromC0(tone);
 }

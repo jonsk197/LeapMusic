@@ -4,8 +4,7 @@
 #include "Sine.hpp"
 
 Sine::Sine(int tableSize) :
-	tableSize_(tableSize), leftPhase_(0), rightPhase_(0)
-{
+	tableSize_(tableSize), leftPhase_(0), rightPhase_(0) {
 	table_ = new float[tableSize];
 	for (int i = 0; i < tableSize; ++i) {
 			table_[i] = 0.25f * (float)sin(((double)i/(double)tableSize)*M_PI*2.);

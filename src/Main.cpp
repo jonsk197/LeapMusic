@@ -8,17 +8,17 @@
 #include "LeapListener.hpp"
 #include "Matte.hpp"
 #include "Sound.hpp"
-#include "mixer.hpp"
+#include "Mixer.hpp"
 #include "Consumer.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
 	Controller controller;
 	Sound sound;
+	std::cout << "lolo" << '\n';
 	LeapListener listener;
 
-
-	/* Have the sample listener receive events from the controller.
+		/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
 	 * from the device, which can be used in another thread. */
 	controller.addListener(listener);
