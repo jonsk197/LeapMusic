@@ -39,7 +39,6 @@ Mixer::Mixer(float frequency) :
 		for (int position = 0; position < tableSize; position++) {
 			table[position] = (float) sin(((double)position / tableSize)*M_PI*2.);
 		}
-		std::cout << "lolo: " << tone << '\n';
 		toneLookupTables.push_back(table);
 	}
 }
@@ -63,7 +62,6 @@ int Mixer::PACallback(const void* inputBuffer,
 		float amplitude = 0;
 
 		if (playing) {
-			std::cout << tone << std::endl;
 			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
 
@@ -98,10 +96,9 @@ int Mixer::PACallback(const void* inputBuffer,
 		}else{
 			currentTrackPosition++;
 		}
-
+		tone = nextTone;
 		if (toneLookupTables[tone][positionInSine] > 0 &&
-				toneLookupTables[tone][positionInSine - 1] < 0 ) {
-			tone = nextTone;
+				toneLookupTables[tone][positionInSine - 1] < 0 ) {	
 			positionInSine = 0;
 		}
 

@@ -48,7 +48,7 @@ void Sound::startMixer(void) {
 }
 
 double Sound::frequencyOfNoteFromA4(int n){
-	return A4 * pow(2, n/12);
+	return A4 * pow(2, (double)n/12.f);
 }
 
 double Sound::frequencyOfNoteFromA4(double f) {
@@ -56,7 +56,7 @@ double Sound::frequencyOfNoteFromA4(double f) {
 }
 
 double Sound::frequencyOfNoteFromC0(int n) {
-	return C0 * pow(2, n/12);
+	return C0 * pow(2, (double)n/12.f);
 }
 
 double Sound::frequencyOfNoteFromC0(double f) {

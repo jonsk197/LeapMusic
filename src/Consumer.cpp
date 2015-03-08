@@ -46,6 +46,7 @@ void Consumer::startConsumeLoop() {
 			recording = !recording;
 			sound.getMixer().startOrStopRecording(recording);
 		}
+		
 		recording = listener.recording;
 		sound.getMixer().setToneFromC0(palmPosition.y / 3);
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
