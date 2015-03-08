@@ -22,7 +22,7 @@ ln -s ~/Path/To/SDK/LeapSDK ./
 Then install the PortAudio library. On Ubuntu and other Debian derivatives it's:
 
 ```bash
-sudo apt-get install libportaudio-dev
+sudo apt-get install libportaudio19-dev libxmu-dev libxi-dev
 ```
 On MacOSX with homebrew it's:
 ```bash
