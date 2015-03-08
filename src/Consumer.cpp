@@ -29,6 +29,12 @@ void Consumer::startConsumeLoop() {
 	while (true) {
 		menuOpen = listener.menuOpen;
 		palmPosition = listener.getPalmPosition();
+
+		Graphics::handX = palmPosition.x;
+		Graphics::handY = palmPosition.y;
+		sound.getContinousSine().setVolume((palmPosition.x + 300) / 600);
+
+		menuOpen = listener.getMenuOpen();
 		if(menuOpen){
 			menu.openOrUpdateMenu(palmPosition);
 		} else{
@@ -37,18 +43,13 @@ void Consumer::startConsumeLoop() {
 
 		// If the user has switched to or from playing a note, tell that
 		// to the sound system.
-		if (playingNote != listener.playing){
+		if (playingNote != listener.isPlaying()){
 			playingNote = !playingNote;
 			sound.getMixer().playing = playingNote;
 		}
-
-		if(recording != listener.recording){
-			recording = !recording;
-			sound.getMixer().startOrStopRecording(recording);
-		}
-		
-		recording = listener.recording;
-		sound.getMixer().setToneFromC0(palmPosition.y / 3);
+		recording = listener.isRecording();
+		currentTone = listener.getFrequency();
+		sound.getContinousSine().setFrequency(currentTone);
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
 }
