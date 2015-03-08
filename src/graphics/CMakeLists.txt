@@ -4,8 +4,8 @@ add_library (Graphics
 	VectorUtils3.c
 	LoadObject.c
 	LoadTGA.c
-	shaders/hand.vert
-	shaders/hand.frag)
+	shaders/main.vert
+	shaders/main.frag)
 target_link_libraries (Graphics
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARIES}
