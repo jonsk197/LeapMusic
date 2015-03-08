@@ -89,7 +89,7 @@ int Mixer::PACallback(const void* inputBuffer,
 
 		if (playingRecorded) {
 			for (unsigned int j = 0; j < playbackVector.size(); ++j) {
-				amplitude = amplitude + playbackVector[j][currentTrackPosition];
+				amplitude += playbackVector[j][currentTrackPosition];
 			}
 		}
 
@@ -104,6 +104,11 @@ int Mixer::PACallback(const void* inputBuffer,
 			tone = nextTone;
 			positionInSine = 0;
 		}
+
+		// Clipping
+		amplitude = fmin(amplitude, 1.0f);
+		amplitude = fmax(amplitude, -1.0f);
+		// Output
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
@@ -116,7 +121,8 @@ void Mixer::setFrequency(double freq) {
 }
 
 void Mixer::setToneFromC0(int n) {
-	nextTone = n;
+	if (n > 0 && n < 100)
+		nextTone = n;
 }
 
 void Mixer::startOrStopRecording(bool rec) {
