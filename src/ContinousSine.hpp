@@ -8,6 +8,7 @@
 class ContinousSine{
  public:
 	ContinousSine(float frequency);
+	ContinousSine(void);
 
 	/**
 	 * @brief The function which should be hooked into PortAudio.
@@ -33,6 +34,9 @@ class ContinousSine{
 	 */
 	double getFrequency();
 
+
+	void setVolume(double);
+
 	/**
 	 * Whether or not the continous sine should be playing.
 	 */
@@ -40,6 +44,7 @@ class ContinousSine{
 
  private:
 	std::atomic<double> nextTableSize;
+	std::atomic<double> volume;
 	double tableSize;
 	int position;
 	float lastF;
