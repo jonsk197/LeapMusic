@@ -33,6 +33,7 @@ void Consumer::startConsumeLoop() {
 
 		Graphics::handX = palmPosition.x;
 		Graphics::handY = palmPosition.y;
+		sound.getContinousSine().setVolume((palmPosition.x + 300) / 600);
 
 		menuOpen = listener.getMenuOpen();
 		if(menuOpen){
