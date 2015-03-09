@@ -28,8 +28,11 @@ private:
 	static GLuint grass;
 	static GLuint concrete;
 	static GLuint red;
+	static GLuint clef;
 	static Model* bunny;
+	static Model* plane;
 	static mat4   transHand;
+	static mat4   transPlane;
 
 	static constexpr GLfloat near = 1.0;
 	static constexpr GLfloat far = 300.0;

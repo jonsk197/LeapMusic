@@ -28,10 +28,13 @@ const GLfloat Graphics::viewFrustum[] =
 // The following will be reassigned in initResources.
 GLuint Graphics::program = 0;
 Model* Graphics::bunny = NULL;
+Model* Graphics::plane = NULL;
 GLuint Graphics::grass = 0;
 GLuint Graphics::concrete = 0;
 GLuint Graphics::red = 0;
+GLuint Graphics::clef = 0;
 mat4 Graphics::transHand = T(0, 0, 0);
+mat4 Graphics::transPlane = T(0, 0, 1);
 
 // The following will immediately be overwritten by Consumer.
 std::atomic<float> Graphics::handX = {0};
@@ -74,6 +77,8 @@ int Graphics::initResources(void) {
 	program = loadShaders((char*)"./src/graphics/shaders/main.vert",
 												(char*)"./src/graphics/shaders/main.frag");
 	bunny = LoadModelPlus((char*)"./src/graphics/models/bunnyplus.obj");
+	plane = LoadModelPlus((char*)"./src/graphics/models/plane.obj");
+
 	glUniformMatrix4fv(glGetUniformLocation(program, "viewFrustum"),
 	                   1, GL_TRUE, viewFrustum);
 	glUniformMatrix4fv(glGetUniformLocation(program, "lookMatrix"),
@@ -83,6 +88,7 @@ int Graphics::initResources(void) {
 	LoadTGATextureSimple((char*)"./src/graphics/textures/grass.tga", &grass);
 	LoadTGATextureSimple((char*)"./src/graphics/textures/concrete.tga", &concrete);
 	LoadTGATextureSimple((char*)"./src/graphics/textures/red.tga", &red);
+	LoadTGATextureSimple((char*)"./src/graphics/textures/clef_short.tga", &clef);
 
 	glUseProgram(program);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -103,8 +109,10 @@ void Graphics::onDisplay(void) {
 		glBindTexture(GL_TEXTURE_2D, grass);
 	else
 		glBindTexture(GL_TEXTURE_2D, concrete);
-
 	drawObject(transHand, bunny, program);
+
+	glBindTexture(GL_TEXTURE_2D, clef);
+	drawObject(transPlane, plane, program);
 
 	glutSwapBuffers();
 	printError("Graphics::onDisplay()");
