@@ -71,7 +71,7 @@ class Mixer{
 	static const int TRACK_NR_SAMPLES = 191999;
 	std::atomic<int> nextTone;
 	std::atomic<double> volume {1.0};
-	std::atomic<bool> playingRecorded;
+	std::atomic<bool> playingRecorded {true};
 	std::atomic<bool> playingBeat;
 	int tone = 0;
 	int lowerBoundaryHandPosition = 0;

@@ -58,10 +58,10 @@ int Mixer::PACallback(const void* inputBuffer,
 	float **out = static_cast<float **>(outputBuffer);
 
 	for (unsigned int i = 0; i < framesPerBuffer; i++) {
-		positionInSine++;
 		float amplitude = 0;
 
 		if (playing) {
+			positionInSine++;
 			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
 
@@ -96,12 +96,11 @@ int Mixer::PACallback(const void* inputBuffer,
 		}else{
 			currentTrackPosition++;
 		}
-		if (toneLookupTables[tone][positionInSine] > 0 &&
-				toneLookupTables[tone][positionInSine - 1] < 0 ) {	
+		if (toneLookupTables[tone][positionInSine] < 0 &&
+				toneLookupTables[tone][positionInSine - 1] > 0 ) {	
 			positionInSine = 0;
 			tone = nextTone;
 		}
-		tone = nextTone;
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
