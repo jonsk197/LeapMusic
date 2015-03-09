@@ -65,7 +65,7 @@ int Mixer::PACallback(const void* inputBuffer,
 			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
 
-			amplitude += toneLookupTables[tone].at(positionInSine);
+			amplitude += toneLookupTables[tone].at(positionInSine)*volume;
 
 			if(recording) {
 				samplesRecorded++;
@@ -96,12 +96,12 @@ int Mixer::PACallback(const void* inputBuffer,
 		}else{
 			currentTrackPosition++;
 		}
-		tone = nextTone;
 		if (toneLookupTables[tone][positionInSine] > 0 &&
 				toneLookupTables[tone][positionInSine - 1] < 0 ) {	
 			positionInSine = 0;
+			tone = nextTone;
 		}
-
+		tone = nextTone;
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
@@ -110,11 +110,18 @@ int Mixer::PACallback(const void* inputBuffer,
 
 void Mixer::setFrequency(double freq) {
 	nextTone = Sound::toneFromC0(freq);
-	std::cout << "frequency: " << freq << " tone: " << nextTone << '\n';
 }
 
 void Mixer::setToneFromC0(int n) {
-	nextTone = n;
+	if (n <= lowerBoundaryHandPosition){
+		nextTone = lowerBoundaryHandPosition;
+	}else{
+		if (n >= upperBoundaryHandPosition){
+			nextTone = upperBoundaryHandPosition;
+		}else{
+			nextTone =n;
+		}
+	}
 }
 
 void Mixer::startOrStopRecording(bool rec) {
@@ -145,4 +152,9 @@ void Mixer::changeBeatPlaying() {
 }
 double Mixer::getFrequency() {
 	return Sound::frequencyOfNoteFromC0(tone);
+}
+
+void Mixer::setVolume(double vol) {
+	if (vol >= 0.0 && vol <= 1.0)
+		volume = vol;
 }

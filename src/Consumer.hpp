@@ -28,9 +28,8 @@ class Consumer{
  private:
 	LeapListener& listener;
 	Sound& sound;
-	bool menuOpen;
-	bool playingNote;
-	bool recording;
+	bool playingLastFrame = false;
+	bool recordingLastFrame = false;
 	Menu menu;
 	Leap::Vector palmPosition;
 };
