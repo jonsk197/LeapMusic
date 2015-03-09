@@ -21,7 +21,7 @@ class Sound{
 	 * @brief Entry point for a thread which plays a continous sine
 	 * wave.
 	 */
-	static void MixerThreadEntry(Sound& sound);
+	static void threadEntry(Sound& sound);
 
 	/**
 	 * @brief Starts the playback of an endless sine wave.
@@ -262,7 +262,7 @@ class Sound{
   portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
-	Mixer sine;
+	Mixer mixer;
 };
 
 #endif

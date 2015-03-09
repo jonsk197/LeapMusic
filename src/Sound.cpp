@@ -5,7 +5,7 @@
 #include "Mixer.hpp"
 
 Sound::Sound() :
-	sine(Sound::A4) {
+	mixer() {
 	int outDevice = sys.defaultOutputDevice().index();
 	outParamsBeep = portaudio::DirectionSpecificStreamParameters(
 			sys.deviceByIndex(outDevice),
@@ -16,21 +16,21 @@ Sound::Sound() :
 
 
 void Sound::playSine(float length, float frequency) {
-	sine.setFrequency(frequency);
+	mixer.setFrequency(frequency);
 
 	portaudio::StreamParameters
 		paramsBeep(portaudio::DirectionSpecificStreamParameters::null(),
 							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
 							 paNoFlag);
 	portaudio::MemFunCallbackStream<Mixer>
-		streamBeep(paramsBeep, sine, &Mixer::PACallback);
+		streamBeep(paramsBeep, mixer, &Mixer::PACallback);
 
 	streamBeep.start();
 	sys.sleep(1000 * length);
 }
 
 
-void Sound::MixerThreadEntry(Sound& sound) {
+void Sound::threadEntry(Sound& sound) {
 	Sound* soundPointer = &sound;
 	return soundPointer->startMixer();
 }
@@ -41,7 +41,7 @@ void Sound::startMixer(void) {
 							 outParamsBeep, SAMPLE_RATE, FRAMES_PER_BUFFER,
 							 paNoFlag);
 	portaudio::MemFunCallbackStream<Mixer>
-		streamBeep(paramsBeep, sine, &Mixer::PACallback);
+		streamBeep(paramsBeep, mixer, &Mixer::PACallback);
 
 	streamBeep.start();
 	sys.sleep(10000000);
@@ -70,8 +70,8 @@ int Sound::toneFromC0(double frequency) {
 
 
 Mixer& Sound::getMixer(void) {
-	Mixer& s = sine;
-	return s;
+	Mixer& ref = mixer;
+	return ref;
 }
 
 double Sound::handPositionToFrequency(double height){

@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	controller.addListener(listener);
 
 	/* The thread which plays a continous sine wave. */
-	std::thread soundThread(&Sound::continousSineThreadEntry,
+	std::thread soundThread(&Sound::threadEntry,
 	                        std::ref(sound));
 
 	/* The consumer takes action on the data produced by the

@@ -3,7 +3,7 @@
 #include "Entry.hpp"
 
 Entry::Entry(std::string name,std::function<void(void)> activateFunction) :
-	activateFunction(activateFunction), title(name) {
+	title(name), activateFunction(activateFunction) {
 }
 
 void Entry::setTitle(std::string str){
@@ -12,4 +12,8 @@ void Entry::setTitle(std::string str){
 
 std::string Entry::getTitle(){
 	return title;
+}
+
+void Entry::activate(){
+	activateFunction();
 }

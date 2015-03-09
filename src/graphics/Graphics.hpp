@@ -14,6 +14,8 @@ public:
 
 	static std::atomic<float> handX;
 	static std::atomic<float> handY;
+	static std::atomic<bool> playing;
+	static std::atomic<bool> recording;
 
 private:
 	static int initResources(void);
@@ -24,6 +26,7 @@ private:
 
 	static GLuint program;
 	static GLuint grass;
+	static GLuint concrete;
 	static Model* bunny;
 	static mat4   transHand;
 

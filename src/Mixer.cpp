@@ -148,6 +148,12 @@ void Mixer::changePlayBack() {
 void Mixer::changeBeatPlaying() {
 	playingBeat = !playingBeat;
 }
+
 double Mixer::getFrequency() {
 	return Sound::frequencyOfNoteFromC0(tone);
+}
+
+void Mixer::setVolume(double vol) {
+	if (vol >= 0.0 && vol <= 1.0)
+		volume = vol;
 }

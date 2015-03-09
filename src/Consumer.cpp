@@ -8,17 +8,21 @@
 #include "graphics/Graphics.hpp"
 
 Consumer::Consumer(LeapListener& listen, Sound& sound) :
-	listener(listen), sound(sound), playingNote(false), recording(false) {
-		Entry entry1("TechnoViking: 'All heil das'." , [](void){std::cout << "TechnoViking: 'All heil das'." << std::endl; });
+	listener(listen), sound(sound) {
+		Entry entry1("TechnoViking: 'All heil das'." , [](void){
+				std::cout << "TechnoViking: 'All heil das'. \n"; });
 		menu.addEntry(entry1);
 
-		Entry entry2("DEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL", [&](void){ sound.getMixer().deleteLastTrack(); });
+		Entry entry2("Delete last recorded track.", [&](void){
+				sound.getMixer().deleteLastTrack(); });
 		menu.addEntry(entry2);
 
-		Entry entry3("Add common time.", [&](void){ sound.getMixer().changeBeatPlaying(); });
+		Entry entry3("Add common time.", [&](void){
+				sound.getMixer().changeBeatPlaying(); });
 		menu.addEntry(entry3);
 
-		Entry entry4("Turn playback on/off", [&](void){ sound.getMixer().changePlayBack(); });
+		Entry entry4("Turn playback on/off", [&](void){
+				sound.getMixer().changePlayBack(); });
 		menu.addEntry(entry4);
 
 		//Entry entry5("Im fukking done!", [](void){exit(0);});
@@ -31,30 +35,29 @@ void Consumer::startConsumeLoop() {
 
 		Graphics::handX = palmPosition.x;
 		Graphics::handY = palmPosition.y;
-		sound.getContinousSine().setVolume((palmPosition.x + 300) / 600);
+		sound.getMixer().setVolume((palmPosition.x + 300) / 600);
+		sound.getMixer().setToneFromC0(palmPosition.y / 3);
 
-		menuOpen = listener.menuOpen;
-		palmPosition = listener.getPalmPosition();
-		if(menuOpen){
+		if(listener.menuOpen){
 			menu.openOrUpdateMenu(palmPosition);
-		} else{
+		} else {
 			menu.close();
 		}
 
 		// If the user has switched to or from playing a note, tell that
-		// to the sound system.
-		if (playingNote != listener.playing){
-			playingNote = !playingNote;
-			sound.getMixer().playing = playingNote;
+		// to the subsystems. Only tell them on switches.
+		if (playingLastFrame != listener.playing){
+			playingLastFrame = !playingLastFrame;
+			sound.getMixer().playing = playingLastFrame;
+			Graphics::playing = playingLastFrame;
 		}
 
-		if(recording != listener.recording){
-			recording = !recording;
-			sound.getMixer().startOrStopRecording(recording);
+		if(recordingLastFrame != listener.recording){
+			recordingLastFrame = !recordingLastFrame;
+			sound.getMixer().startOrStopRecording(recordingLastFrame);
+			Graphics::recording = recordingLastFrame;
 		}
-		
-		recording = listener.recording;
-		sound.getMixer().setToneFromC0(palmPosition.y / 3);
+
 		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
 }

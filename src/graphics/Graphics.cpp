@@ -8,6 +8,7 @@
 #include "LoadObject.h"
 #include "LoadTGA.h"
 
+
 // These initializations are here because C++ sucks.
 // They should be in the header file in my opinion.
 const vec3 Graphics::cameraPosition = vec3(0.0f, 20.0f, 40.0f);
@@ -28,10 +29,14 @@ const GLfloat Graphics::viewFrustum[] =
 GLuint Graphics::program = 0;
 Model* Graphics::bunny = NULL;
 GLuint Graphics::grass = 0;
+GLuint Graphics::concrete = 0;
 mat4 Graphics::transHand = T(0, 0, 0);
-// These two will immediately be overwritten by Consumer.
+// The following will immediately be overwritten by Consumer.
 std::atomic<float> Graphics::handX = {0};
 std::atomic<float> Graphics::handY = {0};
+std::atomic<bool>  Graphics::playing = {false};
+std::atomic<bool>  Graphics::recording = {false};
+
 
 void Graphics::init(int argc, char** argv) {
 	int* pargc = &argc;
@@ -74,7 +79,7 @@ int Graphics::initResources(void) {
 
 	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
 	LoadTGATextureSimple((char*)"./src/graphics/textures/grass.tga", &grass);
-	glBindTexture(GL_TEXTURE_2D, grass);
+	LoadTGATextureSimple((char*)"./src/graphics/textures/concrete.tga", &concrete);
 
 	glUseProgram(program);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -88,6 +93,14 @@ int Graphics::initResources(void) {
 void Graphics::onDisplay(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	transHand = Mult(T(handX / 10, handY / 10, 0), Ry(M_PI_2));
+
+	if (playing)
+		glBindTexture(GL_TEXTURE_2D, grass);
+	else if(recording)
+		glBindTexture(GL_TEXTURE_2D, grass);
+	else
+		glBindTexture(GL_TEXTURE_2D, concrete);
+
 	drawObject(transHand, bunny, program);
 
 	glutSwapBuffers();
