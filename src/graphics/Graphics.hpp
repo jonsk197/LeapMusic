@@ -27,6 +27,7 @@ private:
 	static GLuint program;
 	static GLuint grass;
 	static GLuint concrete;
+	static GLuint red;
 	static Model* bunny;
 	static mat4   transHand;
 
