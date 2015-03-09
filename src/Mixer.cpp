@@ -18,14 +18,14 @@ Mixer::Mixer(float frequency) :
 	int i = 0;
 	for (float j = 0; j <= 1; j += 0.005) {
 		beatTrack.at(0 	    + i) = j;
-		beatTrack.at(46000  + i) = j;
+		beatTrack.at(48000  + i) = j;
 		beatTrack.at(96000  + i) = j;
 		beatTrack.at(144000 + i) = j;
 		i++;
 	}
 	for (float k = 1; k >= 0; k -= 0.005) {
 		beatTrack.at(0      + i) = k;
-		beatTrack.at(46000  + i) = k;
+		beatTrack.at(48000  + i) = k;
 		beatTrack.at(96000  + i) = k;
 		beatTrack.at(144000 + i) = k;
 		i++;
@@ -98,7 +98,7 @@ int Mixer::PACallback(const void* inputBuffer,
 		}
 		tone = nextTone;
 		if (toneLookupTables[tone][positionInSine] > 0 &&
-				toneLookupTables[tone][positionInSine - 1] < 0 ) {	
+				toneLookupTables[tone][positionInSine - 1] < 0 ) {
 			positionInSine = 0;
 		}
 
