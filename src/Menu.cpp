@@ -27,11 +27,12 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 		if(DEBUG) {
 			std::cout << angleDeg << "	 " << angleOfSectorDeg << "   " << sector << "	 "<< std::endl;
 		}
-		entries.at(sector).activateFunction();
+		entries.at(sector).activate();
+		close();
 	}
 }
 
-void Menu::closeMenu(){
+void Menu::close(){
 	 isOpen =false;
 }
 

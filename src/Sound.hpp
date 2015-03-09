@@ -3,7 +3,7 @@
 
 #include <portaudiocpp/PortAudioCpp.hxx>
 
-#include "ContinousSine.hpp"
+#include "Mixer.hpp"
 
 class Sound{
  public:
@@ -21,12 +21,12 @@ class Sound{
 	 * @brief Entry point for a thread which plays a continous sine
 	 * wave.
 	 */
-	static void continousSineThreadEntry(Sound& sound);
+	static void MixerThreadEntry(Sound& sound);
 
 	/**
 	 * @brief Starts the playback of an endless sine wave.
 	 */
-	void startContinousSine(void);
+	void startMixer(void);
 
 	/**
 	 * @brief Returns the frequency of a musical note with an offset n
@@ -74,14 +74,21 @@ class Sound{
 	 */
 	static double frequencyOfNoteFromC0(double f);
 
+	/**
+	 * How many tone steps is the tone with the specified frequency
+	 * from C0.
+	 *
+	 * @return int Number of tones from C0.
+	 */
+	static int toneFromC0(double frequency);
 
 	/**
 	 * @brief Get a reference to this Sound systemes instance of a
 	 * continous sine object.
 	 *
-	 * @return ContinousSine& A reference to the ContinousSine.
+	 * @return Mixer& A reference to the Mixer.
 	 */
-	ContinousSine& getContinousSine(void);
+	Mixer& getMixer(void);
 
 	/**
 	 * @brief Transform a hand position to a frequency.
@@ -249,13 +256,13 @@ class Sound{
 	static constexpr float B8 =  7902.13f;
 
 	static constexpr double SAMPLE_RATE = 48000.0f;
-  static const int FRAMES_PER_BUFFER = 256;
+  static const int FRAMES_PER_BUFFER = 64;
 
  private:
   portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
-	ContinousSine sine;
+	Mixer sine;
 };
 
 #endif

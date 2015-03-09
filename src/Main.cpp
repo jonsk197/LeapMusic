@@ -11,6 +11,7 @@
 #include "LeapListener.hpp"
 #include "Matte.hpp"
 #include "Sound.hpp"
+#include "Mixer.hpp"
 #include "Consumer.hpp"
 #include "graphics/Graphics.hpp"
 
