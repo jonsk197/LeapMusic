@@ -10,6 +10,7 @@
 #include "Sound.hpp"
 #include "Mixer.hpp"
 #include "Consumer.hpp"
+#include "Tutorial.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
@@ -17,6 +18,7 @@ int main(int argc, char** argv) {
 	Sound sound;
 	std::cout << "lolo" << '\n';
 	LeapListener listener;
+	Tutorial tutorial;
 
 		/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
@@ -31,7 +33,7 @@ int main(int argc, char** argv) {
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
 	std::thread consumerThread(&Consumer::threadEntry,
-														 std::ref(listener), std::ref(sound));
+														 std::ref(listener), std::ref(sound), std::ref(tutorial));
 
 	if (argc > 1 && strcmp(argv[1], "--bg") == 0)
 		controller.setPolicy(Leap::Controller::POLICY_BACKGROUND_FRAMES);
