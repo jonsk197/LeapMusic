@@ -30,11 +30,6 @@ Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 }
 
 void Consumer::startConsumeLoop() {
-
-	if(tutorial.playTutorial){
-		tutorial.play();
-	}
-
 	while (true) {
 		palmPosition = listener.getPalmPosition();
 
