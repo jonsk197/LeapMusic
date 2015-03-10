@@ -6,6 +6,8 @@
 #include "Sound.hpp"
 #include "Tutorial.hpp"
 
+class Tutorial;
+
 class Consumer{
  public:
 	/**
