@@ -119,7 +119,7 @@ int Mixer::PACallback(const void* inputBuffer,
 			currentTrackPosition++;
 		}
 		if (toneLookupTables[tone][positionInSine] < 0 &&
-				toneLookupTables[tone][positionInSine - 1] > 0 ) {	
+				toneLookupTables[tone][positionInSine - 1] > 0 ) {
 			positionInSine = 0;
 			tone = nextTone;
 		}
@@ -139,13 +139,13 @@ void Mixer::setFrequency(double freq) {
 }
 
 void Mixer::setToneFromC0(int n) {
-	if (n <= lowerBoundaryHandPosition){
-		nextTone = lowerBoundaryHandPosition;
-	}else{
-		if (n >= upperBoundaryHandPosition){
-			nextTone = upperBoundaryHandPosition;
-		}else{
-			nextTone =n;
+	if (n <= LOWEST_NOTE) {
+		nextTone = LOWEST_NOTE;
+	} else {
+		if (n >= HIGHEST_NOTE) {
+			nextTone = HIGHEST_NOTE;
+		} else {
+			nextTone = n;
 		}
 	}
 }

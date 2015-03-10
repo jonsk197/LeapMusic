@@ -24,15 +24,19 @@ const GLfloat Graphics::viewFrustum[] =
 
 
 // The following will be reassigned in initResources.
-GLuint Graphics::program = 0;
-Model* Graphics::bunny = NULL;
-Model* Graphics::plane = NULL;
-GLuint Graphics::grass = 0;
-GLuint Graphics::concrete = 0;
-GLuint Graphics::red = 0;
-GLuint Graphics::clef = 0;
-mat4 Graphics::transHand = T(0, 0, 0);
-mat4 Graphics::transPlane = Mult(Mult(T(0, 20, 1), Rx(-M_PI_2)), S(1.5, 1.5, 1.5));
+GLuint Graphics::program     = 0;
+Model* Graphics::bunny       = NULL;
+Model* Graphics::note        = NULL;
+Model* Graphics::plane       = NULL;
+GLuint Graphics::green       = 0;
+GLuint Graphics::white       = 0;
+GLuint Graphics::red         = 0;
+GLuint Graphics::clef        = 0;
+GLuint Graphics::signTexture = 0;
+mat4   Graphics::transHand   = T(0, 0, 0);
+mat4   Graphics::transSign   = Mult(T(0, 20, 0), Rx(-M_PI_2));
+mat4   Graphics::transPlane  = Mult(Mult(T(0, 20, 1), Rx(-M_PI_2)), S(1.5, 1.5, 1.5));
+std::atomic<bool> Graphics::signShowing = {false};
 
 // The following will immediately be overwritten by Consumer.
 std::atomic<float> Graphics::handX = {0};
@@ -75,6 +79,7 @@ int Graphics::initResources(void) {
 	program = loadShaders((char*)"./src/graphics/shaders/main.vert",
 												(char*)"./src/graphics/shaders/main.frag");
 	bunny = LoadModelPlus((char*)"./src/graphics/models/bunnyplus.obj");
+	note = LoadModelPlus((char*)"./src/graphics/models/note.obj");
 	plane = LoadModelPlus((char*)"./src/graphics/models/plane2.obj");
 	glUseProgram(program);
 
@@ -84,8 +89,8 @@ int Graphics::initResources(void) {
 										 1, GL_TRUE, lookMatrix.m);
 
 	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
-	LoadTGATextureSimple((char*)"./src/graphics/textures/grass.tga", &grass);
-	LoadTGATextureSimple((char*)"./src/graphics/textures/concrete.tga", &concrete);
+	LoadTGATextureSimple((char*)"./src/graphics/textures/green.tga", &green);
+	LoadTGATextureSimple((char*)"./src/graphics/textures/white.tga", &white);
 	LoadTGATextureSimple((char*)"./src/graphics/textures/red.tga", &red);
 	LoadTGATextureSimple((char*)"./src/graphics/textures/clef_short.tga", &clef);
 
@@ -99,20 +104,27 @@ int Graphics::initResources(void) {
 }
 
 void Graphics::onDisplay(void) {
-	GLfloat t = (GLfloat)glutGet(GLUT_ELAPSED_TIME) / 500;
+	GLfloat time = (GLfloat)glutGet(GLUT_ELAPSED_TIME) / 500;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	transHand = Mult(T(handX / 10, handY / 10, 0), Ry(M_PI_2 * t));
 
+	transHand = T(0, handY / 10, 0);
+	if (time > 100)
+		easter(time);
 	if (recording)
 		glBindTexture(GL_TEXTURE_2D, red);
 	else if(playing)
-		glBindTexture(GL_TEXTURE_2D, grass);
+		glBindTexture(GL_TEXTURE_2D, green);
 	else
-		glBindTexture(GL_TEXTURE_2D, concrete);
-	drawObject(transHand, bunny, program);
+		glBindTexture(GL_TEXTURE_2D, white);
+	drawObject(transHand, note, program);
 
 	glBindTexture(GL_TEXTURE_2D, clef);
 	drawObject(transPlane, plane, program);
+
+	if (signShowing) {
+		glBindTexture(GL_TEXTURE_2D, signTexture);
+		drawObject(transSign, plane, program);
+	}
 
 	glutSwapBuffers();
 	printError("Graphics::onDisplay()");
@@ -135,4 +147,18 @@ void Graphics::onTimer(int value) {
 	glutTimerFunc(16, &Graphics::onTimer, value);
 	printError("Graphics::onTimer()");
 
+}
+
+void Graphics::easter(GLfloat time){
+		transHand = Mult(T(handX / 10, handY / 10, 0), Ry(M_PI_2 * time));
+		note = bunny;
+}
+
+void Graphics::showSign(std::string imagePath){
+	LoadTGATextureSimple((char*)imagePath.c_str(), &signTexture);
+	signShowing = true;
+}
+
+void Graphics::hideSign(void){
+	signShowing = false;
 }

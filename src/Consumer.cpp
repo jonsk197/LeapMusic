@@ -8,8 +8,8 @@
 #include "Tutorial.hpp"
 #include "graphics/Graphics.hpp"
 
-Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
-	listener(listen), sound(sound), tutorial(tutorial) {
+Consumer::Consumer(LeapListener& listen, Sound& sound) :
+	listener(listen), sound(sound) {
 		Entry entry1("TechnoViking: 'All heil das'." , [](void){
 				std::cout << "TechnoViking: 'All heil das'. \n"; });
 		menu.addEntry(entry1);
@@ -63,7 +63,7 @@ void Consumer::startConsumeLoop() {
 	}
 }
 
-void Consumer::threadEntry(LeapListener& listener, Sound& sound, Tutorial& tutorial) {
-	Consumer* consumerPointer = new Consumer(listener, sound, tutorial);
+void Consumer::threadEntry(LeapListener& listener, Sound& sound) {
+	Consumer* consumerPointer = new Consumer(listener, sound);
 	return consumerPointer->startConsumeLoop();
 }

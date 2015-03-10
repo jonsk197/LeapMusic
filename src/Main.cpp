@@ -14,14 +14,12 @@
 #include "Mixer.hpp"
 #include "Consumer.hpp"
 #include "graphics/Graphics.hpp"
-#include "Tutorial.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
 	Controller controller;
 	Sound sound;
 	LeapListener listener;
-	Tutorial tutorial;
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
