@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	Controller controller;
 	Sound sound;
 	LeapListener listener;
-	Tutorial tutorial;
+	Tutorial tutorial(listener);
 
 		/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events

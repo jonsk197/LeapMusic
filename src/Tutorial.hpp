@@ -1,13 +1,16 @@
 #ifndef LEAPMUSIC_TUTORIAL
 #define LEAPMUSIC_TUTORIAL
 
-#include "../include/Leap.h"
 #include "Consumer.hpp"
+#include "LeapListener.hpp"
 
 class Tutorial{
  public:
+
+ 	Tutorial(LeapListener& listener);
+	
 	void play();
-	void turnTutorialOnorOff();
+	void turnTutorialOnOrOff();
 	std::atomic<bool>isTutorialStillPlaying {true};
 
  private:
@@ -16,10 +19,11 @@ class Tutorial{
  	void stepOpenMenu();
  	void stepSelectItem();
 
-  	Consumer& consumer;
+  	LeapListener& listener;
+  	bool runOnce = true;
  	bool playSound = true;
 	bool recordingSound = false;
-	bool menuOpen = false;
+	bool menuOpenTT = false;
 };
 
 #endif

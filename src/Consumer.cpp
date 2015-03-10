@@ -9,8 +9,8 @@
 
 Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 	listener(listen), sound(sound), tutorial(tutorial) {
-		Entry entry1("TechnoViking: 'All heil das'." , [](void){
-				std::cout << "TechnoViking: 'All heil das'. \n"; });
+		Entry entry1("Resume" , [](void){
+				std::cout << "Resume. \n"; });
 		menu.addEntry(entry1);
 
 		Entry entry2("Delete last recorded track.", [&](void){
@@ -41,8 +41,8 @@ void Consumer::startConsumeLoop() {
 		sound.getMixer().setVolume((palmPosition.x + 300) / 600);
 		sound.getMixer().setToneFromC0(palmPosition.y / 3);
 
-		menuOpen = listener.menuOpen;
-		if(menuOpen){
+		
+		if(listener.menuOpen){
 			menu.openOrUpdateMenu(palmPosition);
 		} else {
 			menu.close();
@@ -50,13 +50,11 @@ void Consumer::startConsumeLoop() {
 
 		// If the user has switched to or from playing a note, tell that
 		// to the subsystems. Only tell them on switches.
-		playing = listener.playing;
-		if (playingLastFrame != playing){
+		if (playingLastFrame != listener.playing){
 			playingLastFrame = !playingLastFrame;
 			sound.getMixer().playing = playingLastFrame;
 		}
-		recording = listener.recording;
-		if(recordingLastFrame != recording){
+		if(recordingLastFrame != listener.recording){
 			recordingLastFrame = !recordingLastFrame;
 			sound.getMixer().startOrStopRecording(recordingLastFrame);
 		}

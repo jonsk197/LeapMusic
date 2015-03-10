@@ -130,28 +130,28 @@ void LeapListener::onFrame(const Controller& controller) {
 										[](bool b){
 											return b;
 										})) {
-			std::cout << "Recording.       ";
+			//std::cout << "Recording.       ";
 			recording = true;
 			playing = true;
 		}
 		else if (fingersClosed[Finger::TYPE_PINKY] && fingersClosed[Finger::TYPE_RING]) {
-			std::cout << "Playing.       ";
+			//std::cout << "Playing.       ";
 			playing = true;
 			recording = false;
 		}
 		else {
-			std::cout << "The hand is open.      ";
+			//std::cout << "The hand is open.      ";
 			recording = false;
 			playing = false;
 		}
 
 		// Is the hard turned upside down?
 		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
-			std::cout << "Menu open. " << std::endl;
+			//std::cout << "Menu open. " << std::endl;
 			menuOpen = true;
 		}
 		else {
-			std::cout << "Menu Closed. " << std::endl;
+			//std::cout << "Menu Closed. " << std::endl;
 			menuOpen = false;
 		}
 

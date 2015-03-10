@@ -1,48 +1,68 @@
 #include <cmath>
 
 #include "Tutorial.hpp"
-#include "Consumer.hpp"
+#include "LeapListener.hpp"
 #include "../include/Leap.h"
 
 using namespace Leap;
+Tutorial::Tutorial(LeapListener& listener) : listener(listener){
+
+}
 
 void Tutorial::play(){
 
 	if(isTutorialStillPlaying){
+	
 		if(playSound){
-			stepPlaying();
-			if (consumer.playing){
-				playSound = false;
+			
+			if(runOnce){
+				stepPlaying();
+			}
+			if (listener.playing){
 				recordingSound = true;
+				playSound = false;
+				runOnce = true;
+				//Graphics::hideSign();
 			}
 		}
 
-		if(recordingSound){
-			stepRecording();
-			if(consumer.recording){
-				recordingSound=false;
-				menuOpen = true;
+		else if(recordingSound){
+			if(runOnce){
+				stepRecording();
+			}
+			if(listener.recording){
+				menuOpenTT = true;
+				recordingSound = false;
+				runOnce = true;
+				//Graphics::hideSign();
 			}
 		}	
 
-		if(menuOpen){
-			stepOpenMenu();
-			if(consumer.menuOpen){
-				turnTutorialOnorOff();
+		else if(menuOpenTT){
+				if(runOnce){
+					stepOpenMenu();
+				}
+				if(listener.menuOpen){
+					turnTutorialOnOrOff();
+					menuOpenTT = false;
+					runOnce = true;
+					//Graphics::hideSign();
 			}
 		}
 	}
 }
 
-void Tutorial::turnTutorialOnorOff(){
+void Tutorial::turnTutorialOnOrOff(){
 	isTutorialStillPlaying = !isTutorialStillPlaying;
 }
 
 void Tutorial::stepPlaying(){
 	std::cout << "Hi, this is Leap Music. To play a sound, shut your hand with all fingers except the forefinger." << std::endl;
+	//Graqhics::showSine("./src/graphics/textures/paly.tga");
 	/*
 	* Kod för att köra bild och ljud för detta event.
 	*/
+	runOnce = false;
 	return;
 }
 
@@ -51,6 +71,7 @@ void Tutorial::stepRecording(){
 	/*
 	* Kod för att köra bild och ljud för detta event.
 	*/
+	runOnce = false;
 	return;
 
 }
@@ -60,6 +81,7 @@ void Tutorial::stepOpenMenu(){
 	/*
 	* Kod för att köra bild och ljud för detta event.
 	*/
+	runOnce = false;
 	return;
 }
 
@@ -68,5 +90,6 @@ void Tutorial::stepSelectItem(){
 	/*
 	* Kod för att köra bild och ljud för detta event.
 	*/
+	runOnce = false;
 	return;
 }
