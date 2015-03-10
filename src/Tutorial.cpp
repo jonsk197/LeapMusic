@@ -1,27 +1,19 @@
 #include <cmath>
+#include <curses.h>
 
 #include "Tutorial.hpp"
 #include "LeapListener.hpp"
-#include <iostream>
-#include <stdio.h> 
+#include "../include/Leap.h"
 
-#include <curses.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-
-
-#define KEY_ESC '\033'
-
+using namespace Leap;
 Tutorial::Tutorial(LeapListener& listener) : listener(listener){
 }
 
 void Tutorial::play(){
 
-	if(getch() == KEY_ESC) {
+	if (getch() == '\033') {
 		turnTutorialOnOrOff();
 	}        
-
 
 	if(isTutorialStillPlaying){
 	
@@ -55,10 +47,10 @@ void Tutorial::play(){
 					stepOpenMenu();
 				}
 				if(listener.menuOpen){
+					turnTutorialOnOrOff();
 					menuOpenTT = false;
 					runOnce = true;
 					//Graphics::hideSign();
-					turnTutorialOnOrOff();
 			}
 		}
 	}

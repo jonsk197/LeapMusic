@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
 project (LeapMusic)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -Wextra -pedantic-errors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -Wextra -lcurses -pedantic-errors")
 
 set (LeapMusic_VERSION_MAJOR 0)
 set (LeapMusic_VERSION_MINOR 1)
