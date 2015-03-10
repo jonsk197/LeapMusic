@@ -139,13 +139,14 @@ void Mixer::setFrequency(double freq) {
 }
 
 void Mixer::setToneFromC0(int n) {
-	if (n <= LOWEST_NOTE) {
-		nextTone = LOWEST_NOTE;
+	uint nn = n;
+	if (nn <= 0) {
+		nextTone = 0;
 	} else {
-		if (n >= HIGHEST_NOTE) {
-			nextTone = HIGHEST_NOTE;
+		if (nn >= toneLookupTables.size()) {
+			nextTone = toneLookupTables.size() - 1;
 		} else {
-			nextTone = n;
+			nextTone = nn;
 		}
 	}
 }
