@@ -2,6 +2,7 @@
 #define LEAPMUSIC_GRAPHICS
 
 #include <atomic>
+#include <string>
 
 #include <GL/glew.h>
 
@@ -10,7 +11,29 @@
 
 class Graphics {
 public:
+
+	/**
+	 * @brief Initializes the graphics engine.
+	 *
+	 * @param argc The number of arguments passed.
+	 * @param argv Arguments which are passed on to freeGLUT.
+	 */
 	static void init(int argc, char** argv);
+
+
+	/**
+	 * @brief If you want the graphics system to show the user a sign
+	 * with something on, this is the function to call.
+	 *
+	 * @param pathToImage A string with the path to the texture which is
+	 * to be shown on the billboard.
+	 */
+	static void showSign(std::string);
+
+	/**
+	 * @brief Hides the currently showing sign, if there is one.
+	 */
+	static void hideSign(void);
 
 	static std::atomic<float> handX;
 	static std::atomic<float> handY;
@@ -23,16 +46,21 @@ private:
 	static void onDisplay(void);
 	static void onTimer(int);
 	static void drawObject(mat4, Model*, GLuint);
+	static void easter(GLfloat time);
 
 	static GLuint program;
-	static GLuint grass;
-	static GLuint concrete;
+	static GLuint green;
+	static GLuint white;
 	static GLuint red;
 	static GLuint clef;
+	static GLuint signTexture;
 	static Model* bunny;
+	static Model* note;
 	static Model* plane;
 	static mat4   transHand;
+	static mat4   transSign;
 	static mat4   transPlane;
+	static std::atomic<bool> signShowing;
 
 	static constexpr GLfloat near = 1.0;
 	static constexpr GLfloat far = 300.0;

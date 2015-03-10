@@ -74,8 +74,8 @@ class Mixer{
 	std::atomic<bool> playingRecorded {true};
 	std::atomic<bool> playingBeat;
 	int tone = 0;
-	int lowerBoundaryHandPosition = 0;
-	int upperBoundaryHandPosition = 100;
+	static const int LOWEST_NOTE = 0;
+	static const int HIGHEST_NOTE = 60;
 	unsigned int positionInSine = 0;
 	unsigned int currentTrackPosition = 0;
 	unsigned int samplesRecorded = 0;

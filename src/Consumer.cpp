@@ -5,13 +5,13 @@
 #include "LeapListener.hpp"
 #include "Consumer.hpp"
 #include "Mixer.hpp"
-#include "graphics/Graphics.hpp"
 #include "Tutorial.hpp"
+#include "graphics/Graphics.hpp"
 
 Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 	listener(listen), sound(sound), tutorial(tutorial) {
-		Entry entry1("Resume" , [](void){
-				std::cout << "Menu is open. \n"; });
+		Entry entry1("TechnoViking: 'All heil das'." , [](void){
+				std::cout << "TechnoViking: 'All heil das'. \n"; });
 		menu.addEntry(entry1);
 
 		Entry entry2("Delete last recorded track.", [&](void){

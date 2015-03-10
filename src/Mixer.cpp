@@ -83,6 +83,7 @@ int Mixer::PACallback(const void* inputBuffer,
 		float amplitude = 0;
 
 		if (playing) {
+			positionInSine++;
 			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
 
@@ -118,10 +119,15 @@ int Mixer::PACallback(const void* inputBuffer,
 			currentTrackPosition++;
 		}
 		if (toneLookupTables[tone][positionInSine] < 0 &&
-				toneLookupTables[tone][positionInSine - 1] > 0 ) {	
+				toneLookupTables[tone][positionInSine - 1] > 0 ) {
 			positionInSine = 0;
 			tone = nextTone;
 		}
+
+		// Clipping
+		amplitude = fmin(amplitude, 1.0f);
+		amplitude = fmax(amplitude, -1.0f);
+		// Output
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
@@ -133,13 +139,14 @@ void Mixer::setFrequency(double freq) {
 }
 
 void Mixer::setToneFromC0(int n) {
-	if (n <= lowerBoundaryHandPosition){
-		nextTone = lowerBoundaryHandPosition;
-	}else{
-		if (n >= upperBoundaryHandPosition){
-			nextTone = upperBoundaryHandPosition;
-		}else{
-			nextTone =n;
+	uint nn = n;
+	if (nn <= 0) {
+		nextTone = 0;
+	} else {
+		if (nn >= toneLookupTables.size()) {
+			nextTone = toneLookupTables.size() - 1;
+		} else {
+			nextTone = nn;
 		}
 	}
 }

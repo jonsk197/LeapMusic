@@ -3,6 +3,9 @@
 
 #include "Consumer.hpp"
 #include "LeapListener.hpp"
+#include <atomic>
+
+#include "../include/Leap.h"
 
 class Tutorial{
  public:
