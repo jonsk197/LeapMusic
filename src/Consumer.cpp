@@ -5,10 +5,11 @@
 #include "LeapListener.hpp"
 #include "Consumer.hpp"
 #include "Mixer.hpp"
+#include "Tutorial.hpp"
 #include "graphics/Graphics.hpp"
 
-Consumer::Consumer(LeapListener& listen, Sound& sound) :
-	listener(listen), sound(sound) {
+Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
+	listener(listen), sound(sound), tutorial(tutorial) {
 		Entry entry1("TechnoViking: 'All heil das'." , [](void){
 				std::cout << "TechnoViking: 'All heil das'. \n"; });
 		menu.addEntry(entry1);
@@ -58,11 +59,11 @@ void Consumer::startConsumeLoop() {
 			Graphics::recording = recordingLastFrame;
 		}
 
-		std::this_thread::sleep_for (std::chrono::milliseconds(10));
+		std::this_thread::sleep_for (std::chrono::milliseconds(1));
 	}
 }
 
-void Consumer::threadEntry(LeapListener& listener, Sound& sound) {
-	Consumer* consumerPointer = new Consumer(listener, sound);
+void Consumer::threadEntry(LeapListener& listener, Sound& sound, Tutorial& tutorial) {
+	Consumer* consumerPointer = new Consumer(listener, sound, tutorial);
 	return consumerPointer->startConsumeLoop();
 }
