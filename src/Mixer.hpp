@@ -65,16 +65,17 @@ class Mixer{
 
 	void changeBeatPlaying();
 
-
 	void setVolume(double);
 
  private:
 	static const int TRACK_NR_SAMPLES = 191999;
 	std::atomic<int> nextTone;
-	std::atomic<double> volume;
-	std::atomic<bool> playingRecorded;
+	std::atomic<double> volume {1.0};
+	std::atomic<bool> playingRecorded {true};
 	std::atomic<bool> playingBeat;
 	int tone = 0;
+	int lowerBoundaryHandPosition = 0;
+	int upperBoundaryHandPosition = 100;
 	unsigned int positionInSine = 0;
 	unsigned int currentTrackPosition = 0;
 	unsigned int samplesRecorded = 0;

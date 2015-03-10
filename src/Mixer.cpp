@@ -80,14 +80,13 @@ int Mixer::PACallback(const void* inputBuffer,
 	float **out = static_cast<float **>(outputBuffer);
 
 	for (unsigned int i = 0; i < framesPerBuffer; i++) {
-		positionInSine++;
 		float amplitude = 0;
 
 		if (playing) {
 			if (positionInSine >= toneLookupTables.at(tone).size())
 				positionInSine = 0;
 
-			amplitude += toneLookupTables[tone].at(positionInSine);
+			amplitude += toneLookupTables[tone].at(positionInSine)*volume;
 
 			if(recording) {
 				samplesRecorded++;
@@ -118,16 +117,11 @@ int Mixer::PACallback(const void* inputBuffer,
 		}else{
 			currentTrackPosition++;
 		}
-		tone = nextTone;
-		if (toneLookupTables[tone][positionInSine] > 0 &&
-				toneLookupTables[tone][positionInSine - 1] < 0 ) {
+		if (toneLookupTables[tone][positionInSine] < 0 &&
+				toneLookupTables[tone][positionInSine - 1] > 0 ) {	
 			positionInSine = 0;
+			tone = nextTone;
 		}
-
-		// Clipping
-		amplitude = fmin(amplitude, 1.0f);
-		amplitude = fmax(amplitude, -1.0f);
-		// Output
 		out[0][i] = amplitude;
 		out[1][i] = amplitude;
 	}
@@ -136,13 +130,18 @@ int Mixer::PACallback(const void* inputBuffer,
 
 void Mixer::setFrequency(double freq) {
 	nextTone = Sound::toneFromC0(freq);
-	std::cout << "frequency: " << freq << " tone: " << nextTone << '\n';
 }
 
 void Mixer::setToneFromC0(int n) {
-	std::cout << n << '\n';
-	if (n > 0 && n < 100)
-		nextTone = n;
+	if (n <= lowerBoundaryHandPosition){
+		nextTone = lowerBoundaryHandPosition;
+	}else{
+		if (n >= upperBoundaryHandPosition){
+			nextTone = upperBoundaryHandPosition;
+		}else{
+			nextTone =n;
+		}
+	}
 }
 
 void Mixer::startOrStopRecording(bool rec) {
@@ -171,7 +170,6 @@ void Mixer::changePlayBack() {
 void Mixer::changeBeatPlaying() {
 	playingBeat = !playingBeat;
 }
-
 double Mixer::getFrequency() {
 	return Sound::frequencyOfNoteFromC0(tone);
 }

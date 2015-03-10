@@ -4,6 +4,9 @@
 #include "LeapListener.hpp"
 #include "Menu.hpp"
 #include "Sound.hpp"
+#include "Tutorial.hpp"
+
+class Tutorial;
 
 class Consumer{
  public:
@@ -16,18 +19,19 @@ class Consumer{
 	 *
 	 * @return Consumer A new instance of the Consumer class.
 	 */
-	Consumer(LeapListener& listen, Sound& sound);
+	Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial);
 
 	/**
 	 * @brief Starts the loop which consumes data from the
 	 * LeapListener specified in the constructor.
 	 */
 	void startConsumeLoop();
-	static void threadEntry(LeapListener& listener, Sound& sound);
+	static void threadEntry(LeapListener& listener, Sound& sound, Tutorial& tutorial);
 
  private:
 	LeapListener& listener;
 	Sound& sound;
+	Tutorial& tutorial;
 	bool playingLastFrame = false;
 	bool recordingLastFrame = false;
 	Menu menu;

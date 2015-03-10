@@ -1,3 +1,4 @@
+
 #ifndef LEAPMUSIC_LISTENER
 #define LEAPMUSIC_LISTENER
 

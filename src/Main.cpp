@@ -14,12 +14,14 @@
 #include "Mixer.hpp"
 #include "Consumer.hpp"
 #include "graphics/Graphics.hpp"
+#include "Tutorial.hpp"
 
 int main(int argc, char** argv) {
 	// Create a sample listener and controller
 	Controller controller;
 	Sound sound;
 	LeapListener listener;
+	Tutorial tutorial(listener);
 
 	/* Have the sample listener receive events from the controller.
 	 * It should do nothing more but simply listen and record events
@@ -34,7 +36,7 @@ int main(int argc, char** argv) {
 	 * listener. It's responsible for things actually sounding
 	 * and appearing on screen. */
 	std::thread consumerThread(&Consumer::threadEntry,
-	                           std::ref(listener), std::ref(sound));
+														 std::ref(listener), std::ref(sound), std::ref(tutorial));
 
 	// Fire up ze graphics engines!
 	Graphics::init(argc, argv);

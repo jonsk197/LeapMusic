@@ -6,11 +6,12 @@
 #include "Consumer.hpp"
 #include "Mixer.hpp"
 #include "graphics/Graphics.hpp"
+#include "Tutorial.hpp"
 
-Consumer::Consumer(LeapListener& listen, Sound& sound) :
-	listener(listen), sound(sound) {
-		Entry entry1("TechnoViking: 'All heil das'." , [](void){
-				std::cout << "TechnoViking: 'All heil das'. \n"; });
+Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
+	listener(listen), sound(sound), tutorial(tutorial) {
+		Entry entry1("Resume" , [](void){
+				std::cout << "Menu is open. \n"; });
 		menu.addEntry(entry1);
 
 		Entry entry2("Delete last recorded track.", [&](void){
@@ -31,6 +32,10 @@ Consumer::Consumer(LeapListener& listen, Sound& sound) :
 
 void Consumer::startConsumeLoop() {
 	while (true) {
+		if(tutorial.isTutorialStillPlaying){
+			tutorial.play();
+		}
+
 		palmPosition = listener.getPalmPosition();
 
 		Graphics::handX = palmPosition.x;
@@ -62,7 +67,7 @@ void Consumer::startConsumeLoop() {
 	}
 }
 
-void Consumer::threadEntry(LeapListener& listener, Sound& sound) {
-	Consumer* consumerPointer = new Consumer(listener, sound);
+void Consumer::threadEntry(LeapListener& listener, Sound& sound, Tutorial& tutorial) {
+	Consumer* consumerPointer = new Consumer(listener, sound, tutorial);
 	return consumerPointer->startConsumeLoop();
 }
