@@ -162,9 +162,8 @@ void Mixer::setVolume(double vol) {
 }
 
 void Mixer::readFile(const std::string& strFilename) {
-	std::cout << "Start read" << std::endl;
 
-	std::ifstream iStream (strFilename, std::ifstream::binary);
+	std::ifstream iStream (strFilename, std::ios::in);
 
 	if (iStream) {
 		// get length of file:
@@ -178,8 +177,8 @@ void Mixer::readFile(const std::string& strFilename) {
 		audioFile.resize(length);
 
 		for(int i =0; i<= length; i++){
-		audioFile[i] = buffer[i]*0.1f;
-		std::cout << audioFile[i]  << " ,";
+			audioFile[i] = buffer[i];
+			std::cout << audioFile[i]  << " ,";
 		}
 
 		if (iStream)
