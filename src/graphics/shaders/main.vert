@@ -13,8 +13,8 @@ out vec2 fragTexCoord;
 
 void main(void)
 {
-	fragNormal = vertNormal;
-	fragSurface = vertPosition;
+	fragNormal = mat3(transform) * vertNormal;
+	fragSurface = mat3(transform) * vertPosition;
 	fragTexCoord = vertTexCoord;
-	gl_Position = viewFrustum * lookMatrix * transform  * vec4(vertPosition, 1.0);
+	gl_Position = viewFrustum * lookMatrix * transform * vec4(vertPosition, 1.0);
 }

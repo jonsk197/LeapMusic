@@ -31,8 +31,30 @@ Mixer::Mixer(float frequency) :
 		i++;
 	}
 
-	// There are ~ 100 notes between A0 and A8
+	// There are ~ 100 notes between A0 and A8, we only want flat ones.
+	i = 0;
+	int sharpsInARow = 2;
+	bool twoLastTime = true;
 	for (int tone = 0; tone < 100; tone++ ) {
+		i++;
+		// Every other not is not a flat note, except for every 11th.
+		if (i % 2 == 0) {
+			if (sharpsInARow == 0){
+				i++;
+				if (twoLastTime){
+					sharpsInARow = 3;
+					twoLastTime = false;
+				}
+				else{
+					sharpsInARow = 2;
+					twoLastTime = true;
+				}
+			}
+			else {
+				sharpsInARow--;
+				continue;
+			}
+		}
 		double frequency = Sound::frequencyOfNoteFromC0(tone);
 		double tableSize = Sound::SAMPLE_RATE / frequency;
 		std::vector<float> table(ceil(tableSize), 0);
@@ -118,6 +140,7 @@ void Mixer::setFrequency(double freq) {
 }
 
 void Mixer::setToneFromC0(int n) {
+	std::cout << n << '\n';
 	if (n > 0 && n < 100)
 		nextTone = n;
 }

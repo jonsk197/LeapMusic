@@ -130,17 +130,17 @@ void LeapListener::onFrame(const Controller& controller) {
 										[](bool b){
 											return b;
 										})) {
-			std::cout << "Recording.       ";
+			std::cout << "Recording.\t\t";
 			recording = true;
 			playing = true;
 		}
 		else if (fingersClosed[Finger::TYPE_PINKY] && fingersClosed[Finger::TYPE_RING]) {
-			std::cout << "Playing.       ";
+			std::cout << "Playing.\t\t";
 			playing = true;
 			recording = false;
 		}
 		else {
-			std::cout << "The hand is open.      ";
+			std::cout << "The hand is open.\t";
 			recording = false;
 			playing = false;
 		}

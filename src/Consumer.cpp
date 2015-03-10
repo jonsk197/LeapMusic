@@ -36,7 +36,7 @@ void Consumer::startConsumeLoop() {
 		Graphics::handX = palmPosition.x;
 		Graphics::handY = palmPosition.y;
 		sound.getMixer().setVolume((palmPosition.x + 300) / 600);
-		sound.getMixer().setToneFromC0(palmPosition.y / 3);
+		sound.getMixer().setToneFromC0(5.9 + palmPosition.y / 8.2);
 
 		if(listener.menuOpen){
 			menu.openOrUpdateMenu(palmPosition);
@@ -58,7 +58,7 @@ void Consumer::startConsumeLoop() {
 			Graphics::recording = recordingLastFrame;
 		}
 
-		std::this_thread::sleep_for (std::chrono::milliseconds(1));
+		std::this_thread::sleep_for (std::chrono::milliseconds(10));
 	}
 }
 
