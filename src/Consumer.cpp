@@ -10,7 +10,7 @@
 Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 	listener(listen), sound(sound), tutorial(tutorial) {
 		Entry entry1("Resume" , [](void){
-				std::cout << "Resume. \n"; });
+				std::cout << "Menu is open. \n"; });
 		menu.addEntry(entry1);
 
 		Entry entry2("Delete last recorded track.", [&](void){

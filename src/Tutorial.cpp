@@ -2,14 +2,26 @@
 
 #include "Tutorial.hpp"
 #include "LeapListener.hpp"
-#include "../include/Leap.h"
+#include <iostream>
+#include <stdio.h> 
 
-using namespace Leap;
+#include <curses.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+
+#define KEY_ESC '\033'
+
 Tutorial::Tutorial(LeapListener& listener) : listener(listener){
-
 }
 
 void Tutorial::play(){
+
+	if(getch() == KEY_ESC) {
+		turnTutorialOnOrOff();
+	}        
+
 
 	if(isTutorialStillPlaying){
 	
@@ -43,10 +55,10 @@ void Tutorial::play(){
 					stepOpenMenu();
 				}
 				if(listener.menuOpen){
-					turnTutorialOnOrOff();
 					menuOpenTT = false;
 					runOnce = true;
 					//Graphics::hideSign();
+					turnTutorialOnOrOff();
 			}
 		}
 	}
@@ -58,19 +70,24 @@ void Tutorial::turnTutorialOnOrOff(){
 
 void Tutorial::stepPlaying(){
 	std::cout << "Hi, this is Leap Music. To play a sound, shut your hand with all fingers except the forefinger." << std::endl;
-	//Graqhics::showSine("./src/graphics/textures/paly.tga");
+	//Graqhics::showSign("./src/graphics/textures/closedHandForeFinger.tga");
+	
 	/*
-	* Kod för att köra bild och ljud för detta event.
+	* Kod för att köra ljud för detta event.
 	*/
+
 	runOnce = false;
 	return;
 }
 
 void Tutorial::stepRecording(){
 	std::cout << "Good, if you want to record the sound shut all fingers of the hand, even the forefinger." << std::endl;
+	//Graqhics::showSign("./src/graphics/textures/closedHand.tga");
+	
 	/*
-	* Kod för att köra bild och ljud för detta event.
+	* Kod för att köra ljud för detta event.
 	*/
+
 	runOnce = false;
 	return;
 
@@ -78,9 +95,12 @@ void Tutorial::stepRecording(){
 
 void Tutorial::stepOpenMenu(){
 	std::cout << "Open menu by turning the hand 180 degrees to the right or left." << std::endl; 
+	//Graqhics::showSign("./src/graphics/textures/flipHand.tga");
+	
 	/*
-	* Kod för att köra bild och ljud för detta event.
+	* Kod för att köra ljud för detta event.
 	*/
+
 	runOnce = false;
 	return;
 }
