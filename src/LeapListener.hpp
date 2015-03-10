@@ -2,6 +2,7 @@
 #define LEAPMUSIC_LISTENER
 
 #include <string>
+#include <atomic>
 #include <mutex>
 
 #include "../include/Leap.h"
@@ -14,11 +15,6 @@ const std::string stateNames[] = {"STATE_INVALID", "STATE_START", "STATE_UPDATE"
 
 class LeapListener : public Leap::Listener {
  public:
-	// Because we have a mutex which is nonmovable
-	// we must redefine the copy constructor and assignment.
-	LeapListener(LeapListener const&);
-	LeapListener& operator=(const LeapListener& rhs);
-
 	LeapListener();
 
 	virtual void onInit(const Controller&);
@@ -33,57 +29,22 @@ class LeapListener : public Leap::Listener {
 	virtual void onServiceDisconnect(const Controller&);
 
 	/**
-	 * @brief Gets whether or not the menu is open in the
-	 * listener.
+	 * @brief Returns the position of the middle of the palm.
 	 *
-	 * @return bool True if the menu is open.
-	 */
-	bool getMenuOpen();
-
-	/**
-	 * @brief Whether the player wants to output a tone or not.
-	 *
-	 * @return bool True if the player wants to play a tone.
-	 */
-	bool isPlaying();
-
-	/**
-	 * @brief Whether the player wants to record a tone or not.
-	 *
-	 * @return bool True if the player wants to record.
-	 */
-	bool isRecording();
-
-	/**
-	 * @brief Returns the frequency for the hand position.
-	 *
-	 * @return a vector with the handposition.
-	 */
-	float getFrequency();
-
-
-	/**
-	 * @brief Returns the hand position.
-	 *
-	 * @return a float with the db for the frequency.
+	 * @return Leap::Vector the position.
 	 */
 	Vector getPalmPosition();
 
+	std::atomic<bool> menuOpen;
+	std::atomic<bool> playing;
+	std::atomic<bool> recording;
+	std::atomic<float> frequency;
+
  private:
-	std::mutex menuLock;
-	bool menuOpen;
-
-	std::mutex recordPlayingLock;
-	bool playing;
-	bool recording;
-
-	std::mutex frequencyLock;
-	float frequency;
+	const bool DEBUG = false;
 
 	std::mutex palmPositionLock;
 	Vector palmPosition;
-
-	const bool DEBUG = false;
 };
 
 #endif

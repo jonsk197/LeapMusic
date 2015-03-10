@@ -11,7 +11,7 @@
 #include "LeapListener.hpp"
 #include "Matte.hpp"
 #include "Sound.hpp"
-#include "mixer.hpp"
+#include "Mixer.hpp"
 #include "Consumer.hpp"
 #include "graphics/Graphics.hpp"
 
@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
 	controller.addListener(listener);
 
 	/* The thread which plays a continous sine wave. */
-	std::thread soundThread(&Sound::MixerThreadEntry,
-													std::ref(sound));
+	std::thread soundThread(&Sound::threadEntry,
+	                        std::ref(sound));
 
 	/* The consumer takes action on the data produced by the
 	 * listener. It's responsible for things actually sounding

@@ -29,6 +29,16 @@ class Mixer{
 	 */
 	void setFrequency(double freq);
 
+	/**
+	 * @brief Set the frequency the continous Sine should be playing in.
+	 *
+	 * Has the same functionality as setFrequency() but instead plays
+	 * tone n counting from C0, the deepest tone to the very left on a
+	 * piano.
+	 *
+	 * @param n The number of steps up from C0 to play.
+	 */
+	void setToneFromC0(int n);
 
 	/**
 	 * @brief Get the frequency currently playing.
@@ -40,17 +50,12 @@ class Mixer{
 	/**
 	 * Whether or not the mixer should be playing.
 	 */
-	std::atomic<bool> playing;
+	std::atomic<bool> playing {false};
 
 	/**
 	 * Whether or not the mixer should be recodring.
 	 */
-	std::atomic<bool> recording;
-
-	/**
-	*This vector contains all the voices that has been storied. The voices is is 4 sec long had stories 4*48000k of sample.
-	*/
-	std::vector< std::vector<float> > playbackVector;
+	std::atomic<bool> recording {false};
 
 	void startOrStopRecording(bool rec);
 
@@ -60,21 +65,35 @@ class Mixer{
 
 	void changeBeatPlaying();
 
- private:
-	std::atomic<double> nextTableSize;
-	std::atomic<bool> playBackBool;
-	std::atomic<bool> playingBeat;
-	double tableSize;
-	int positionInSine;
-	int vectorPosition = 0;
-	int recordingPosition = 0;
-	int startRecordingPosition = 0;
-	float lastF;
-	static constexpr float VECTOR_WIDTH = 191999;
-	float nrOfVectors = 0;
-	std::vector<float> commonTime;
-	std::vector<float> v; 
 
+	void setVolume(double);
+
+ private:
+	static const int TRACK_NR_SAMPLES = 191999;
+	std::atomic<int> nextTone;
+	std::atomic<double> volume;
+	std::atomic<bool> playingRecorded;
+	std::atomic<bool> playingBeat;
+	int tone = 0;
+	unsigned int positionInSine = 0;
+	unsigned int currentTrackPosition = 0;
+	unsigned int samplesRecorded = 0;
+	unsigned int startRecordingPosition = 0;
+	std::vector<float> beatTrack;
+	std::vector<float> currentTrack;
+
+	/**
+	* This vector contains all the voices that has been stored. The
+	* voices are 4 seconds long and stores 4*48000 samples.
+	*/
+	std::vector<std::vector<float>> playbackVector;
+	/**
+	* This vector contains lookup tables for all the notes in the
+	* western note system. The lookup tables themselves contains
+	* precalculated amplitudes together shaping a sinusoidal wave at
+	* the frequency the note is at.
+	*/
+	std::vector<std::vector<float>>	toneLookupTables;
 };
 
 #endif

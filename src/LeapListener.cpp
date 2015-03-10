@@ -19,26 +19,6 @@ LeapListener::LeapListener() :
 
 }
 
-LeapListener::LeapListener(const LeapListener& from):
-	menuOpen(from.menuOpen),
-	playing(from.playing),
-	recording(from.recording),
-	frequency(from.frequency),
-	palmPosition(from.palmPosition) {
-
-}
-
-LeapListener& LeapListener::operator=(const LeapListener& rhs) {
-	if (this != &rhs){
-		menuOpen = rhs.menuOpen;
-		playing = rhs.playing;
-		recording = rhs.recording;
-		frequency = rhs.frequency;
-		palmPosition = rhs.palmPosition;
-	}
-	return *this;
-}
-
 void LeapListener::onInit(const Controller&) {
 	std::cout << "Initialized" << std::endl;
 }
@@ -85,10 +65,8 @@ void LeapListener::onFrame(const Controller& controller) {
 			std::lock_guard<std::mutex> lock(palmPositionLock);
 			palmPosition = hand.palmPosition();
 		}
-		{
-			std::lock_guard<std::mutex> lock(frequencyLock);
-			frequency = Sound::handPositionToFrequency(hand.palmPosition().y);
-		}
+		frequency = Sound::handPositionToFrequency(hand.palmPosition().y);
+
 		if (DEBUG) {
 		// Calculate the hand's pitch, roll, and yaw angles
 		std::cout << std::string(2, ' ') <<	 "pitch: " << direction.pitch() * RAD_TO_DEG << " degrees, "
@@ -152,20 +130,17 @@ void LeapListener::onFrame(const Controller& controller) {
 										[](bool b){
 											return b;
 										})) {
-			std::cout << "Recording.       ";
-			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			std::cout << "Recording.\t\t";
 			recording = true;
 			playing = true;
 		}
 		else if (fingersClosed[Finger::TYPE_PINKY] && fingersClosed[Finger::TYPE_RING]) {
-			std::cout << "Playing.       ";
-			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			std::cout << "Playing.\t\t";
 			playing = true;
 			recording = false;
 		}
 		else {
-			std::cout << "The hand is open.      ";
-			std::lock_guard<std::mutex> lock(recordPlayingLock);
+			std::cout << "The hand is open.\t";
 			recording = false;
 			playing = false;
 		}
@@ -173,12 +148,10 @@ void LeapListener::onFrame(const Controller& controller) {
 		// Is the hard turned upside down?
 		if (abs(hand.palmNormal().roll() * RAD_TO_DEG) > 120){
 			std::cout << "Menu open. " << std::endl;
-			std::lock_guard<std::mutex> lock(menuLock);
 			menuOpen = true;
 		}
 		else {
 			std::cout << "Menu Closed. " << std::endl;
-			std::lock_guard<std::mutex> lock(menuLock);
 			menuOpen = false;
 		}
 
@@ -215,31 +188,6 @@ void LeapListener::onServiceConnect(const Controller&) {
 void LeapListener::onServiceDisconnect(const Controller&) {
 	std::cout << "Service Disconnected" << std::endl;
 }
-
-
-bool LeapListener::getMenuOpen() {
-	std::lock_guard<std::mutex> lock(menuLock);
-	return menuOpen;
-}
-
-
-bool LeapListener::isRecording() {
-	std::lock_guard<std::mutex> lock(recordPlayingLock);
-	return recording;
-}
-
-
-bool LeapListener::isPlaying() {
-	std::lock_guard<std::mutex> lock(recordPlayingLock);
-	return playing;
-}
-
-
-float LeapListener::getFrequency() {
-	std::lock_guard<std::mutex> lock(frequencyLock);
-	return frequency;
-}
-
 
 Vector LeapListener::getPalmPosition(){
 	std::lock_guard<std::mutex> lock(palmPositionLock);

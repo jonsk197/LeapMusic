@@ -33,7 +33,7 @@ void Menu::openOrUpdateMenu(Leap::Vector handPosition){
 }
 
 void Menu::close(){
-	 isOpen =false;
+	 isOpen = false;
 }
 
 void Menu::addEntry(Entry e){

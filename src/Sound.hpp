@@ -21,7 +21,7 @@ class Sound{
 	 * @brief Entry point for a thread which plays a continous sine
 	 * wave.
 	 */
-	static void MixerThreadEntry(Sound& sound);
+	static void threadEntry(Sound& sound);
 
 	/**
 	 * @brief Starts the playback of an endless sine wave.
@@ -74,6 +74,13 @@ class Sound{
 	 */
 	static double frequencyOfNoteFromC0(double f);
 
+	/**
+	 * How many tone steps is the tone with the specified frequency
+	 * from C0.
+	 *
+	 * @return int Number of tones from C0.
+	 */
+	static int toneFromC0(double frequency);
 
 	/**
 	 * @brief Get a reference to this Sound systemes instance of a
@@ -249,13 +256,13 @@ class Sound{
 	static constexpr float B8 =  7902.13f;
 
 	static constexpr double SAMPLE_RATE = 48000.0f;
-  static const int FRAMES_PER_BUFFER = 256;
+  static const int FRAMES_PER_BUFFER = 128;
 
  private:
   portaudio::AutoSystem autoSys;
 	portaudio::System& sys = portaudio::System::instance();
 	portaudio::DirectionSpecificStreamParameters outParamsBeep;
-	Mixer sine;
+	Mixer mixer;
 };
 
 #endif
