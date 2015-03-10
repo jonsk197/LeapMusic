@@ -10,14 +10,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "sndfile.h"
-
-struct OurData
-{
-  SNDFILE *sndFile;
-  SF_INFO sfInfo;
-  int position;
-};
 
 class Mixer{
  public:
@@ -83,7 +75,6 @@ class Mixer{
 
 
  private:
- 	OurData *data;
 	static const int TRACK_NR_SAMPLES = 191999;
 	std::atomic<int> nextTone;
 	std::atomic<double> volume {1.0};
@@ -99,7 +90,6 @@ class Mixer{
 	std::vector<float> beatTrack;
 	std::vector<float> currentTrack;
 	std::vector<float> audioFile {0};
-	bool readFileBool = false;
 	/**
 	* This vector contains all the voices that has been stored. The
 	* voices are 4 seconds long and stores 4*48000 samples.
@@ -112,7 +102,6 @@ class Mixer{
 	* the frequency the note is at.
 	*/
 	std::vector<std::vector<float>>	toneLookupTables;
-	std::string FILE_NAME = "";
 };
 
 #endif

@@ -60,42 +60,6 @@ int Mixer::PACallback(const void* inputBuffer,
 	(void) inputBuffer;
 	float **out = static_cast<float **>(outputBuffer);
 
-	if (readFileBool) {
-
-		int position = 0;
-		float cursor = 0;
-		float thisSize = framesPerBuffer;
-  		float thisRead;
-
-		while (thisSize > 0) {
-		    /* seek to our current file position */
-		    sf_seek(data->sndFile, data->position, SEEK_SET);
-
-		    /* are we going to read past the end of the file?*/
-		    if (thisSize > (data->sfInfo.frames - data->position)) {
-		      /*if we are, only read to the end of the file*/
-		      thisRead = data->sfInfo.frames - data->position;
-		      /* and then loop to the beginning of the file */
-		      data->position = 0;
-		    
-		    } else {
-		      /* otherwise, we'll just fill up the rest of the output buffer */
-		      thisRead = thisSize;
-		      /* and increment the file position */
-		      data->position += thisRead;
-		    }
-
-		    /* since our output format and channel interleaving is the same as
-			sf_readf_float's requirements */
-		    /* we'll just read straight into the output buffer */
-		    sf_readf_float(data->sndFile, cursor, thisRead);
-		    /* increment the output cursor*/
-		    cursor += thisRead;
-		    /* decrement the number of samples left to process */
-		    thisSize -= thisRead;
-	    }
-	}
-
 	for (unsigned int i = 0; i < framesPerBuffer; i++) {
 		float amplitude = 0;
 
@@ -198,17 +162,31 @@ void Mixer::setVolume(double vol) {
 }
 
 void Mixer::readFile(const std::string& strFilename) {
-	FILE_NAME = strFilename;
-	readFileBool = !readFileBool;
+	std::cout << "Start read" << std::endl;
 
-	if(readFileBool){
-		data = (OurData *)malloc(sizeof(OurData));
+	std::ifstream iStream (strFilename, std::ifstream::binary);
 
-		/* initialize our data structure */
-	 	data->position = 0;
-		data->sfInfo.format = 0;
-	  	/* try to open the file */
-	  	data->sndFile = sf_open(FILE_NAME, SFM_READ, &data->sfInfo);
+	if (iStream) {
+		// get length of file:
+		iStream.seekg (0, iStream.end);
+		int length = iStream.tellg();
+		iStream.seekg (0, iStream.beg);
+		char * buffer = new char [length];
 
-	}  	
+		// read data as a block:
+		iStream.read (buffer,length);
+		audioFile.resize(length);
+
+		for(int i =0; i<= length; i++){
+		audioFile[i] = buffer[i]*0.1f;
+		std::cout << audioFile[i]  << " ,";
+		}
+
+		if (iStream)
+		  std::cout << "all characters read successfully." << std::endl;
+		else
+			std::cout << "error: only " << iStream.gcount() << " could be read." << std::endl;
+
+		iStream.close();
+	}
 }

@@ -31,7 +31,7 @@ Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 
 void Consumer::startConsumeLoop() {
 
-	sound.getMixer().readFile2("/Users/Jonas/Documents/git/LeapMusic/src/audio.raw");
+	sound.getMixer().readFile("/Users/Jonas/audio.raw");
 
 	while (true) {
 
