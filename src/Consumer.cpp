@@ -31,17 +31,18 @@ Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 
 void Consumer::startConsumeLoop() {
 
-	if(tutorial.playTutorial){
-		tutorial.play();
-	}
-
 	while (true) {
+		if(tutorial.isTutorialStillPlaying){
+			tutorial.play();
+		}
+
 		palmPosition = listener.getPalmPosition();
 
 		sound.getMixer().setVolume((palmPosition.x + 300) / 600);
 		sound.getMixer().setToneFromC0(palmPosition.y / 3);
 
-		if(listener.menuOpen){
+		menuOpen = listener.menuOpen;
+		if(menuOpen){
 			menu.openOrUpdateMenu(palmPosition);
 		} else {
 			menu.close();
@@ -49,12 +50,13 @@ void Consumer::startConsumeLoop() {
 
 		// If the user has switched to or from playing a note, tell that
 		// to the subsystems. Only tell them on switches.
-		if (playingLastFrame != listener.playing){
+		playing = listener.playing;
+		if (playingLastFrame != playing){
 			playingLastFrame = !playingLastFrame;
 			sound.getMixer().playing = playingLastFrame;
 		}
-
-		if(recordingLastFrame != listener.recording){
+		recording = listener.recording;
+		if(recordingLastFrame != recording){
 			recordingLastFrame = !recordingLastFrame;
 			sound.getMixer().startOrStopRecording(recordingLastFrame);
 		}

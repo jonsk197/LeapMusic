@@ -28,6 +28,10 @@ class Consumer{
 	void startConsumeLoop();
 	static void threadEntry(LeapListener& listener, Sound& sound, Tutorial& tutorial);
 
+	std::atomic<bool>menuOpen {false};
+	std::atomic<bool>playing {false};
+	std::atomic<bool>recording {false};
+
  private:
 	LeapListener& listener;
 	Sound& sound;
