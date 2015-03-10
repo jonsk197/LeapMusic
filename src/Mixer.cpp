@@ -4,11 +4,14 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <fstream> 
 #include <iterator>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "Mixer.hpp"
 #include "Sound.hpp"
-
+#include "sndfile.h"
 
 Mixer::Mixer(float frequency) :
   beatTrack(TRACK_NR_SAMPLES, 0),
@@ -56,6 +59,42 @@ int Mixer::PACallback(const void* inputBuffer,
 	(void) statusFlags;
 	(void) inputBuffer;
 	float **out = static_cast<float **>(outputBuffer);
+
+	if (readFileBool) {
+
+		int position = 0;
+		float cursor = 0;
+		float thisSize = framesPerBuffer;
+  		float thisRead;
+
+		while (thisSize > 0) {
+		    /* seek to our current file position */
+		    sf_seek(data->sndFile, data->position, SEEK_SET);
+
+		    /* are we going to read past the end of the file?*/
+		    if (thisSize > (data->sfInfo.frames - data->position)) {
+		      /*if we are, only read to the end of the file*/
+		      thisRead = data->sfInfo.frames - data->position;
+		      /* and then loop to the beginning of the file */
+		      data->position = 0;
+		    
+		    } else {
+		      /* otherwise, we'll just fill up the rest of the output buffer */
+		      thisRead = thisSize;
+		      /* and increment the file position */
+		      data->position += thisRead;
+		    }
+
+		    /* since our output format and channel interleaving is the same as
+			sf_readf_float's requirements */
+		    /* we'll just read straight into the output buffer */
+		    sf_readf_float(data->sndFile, cursor, thisRead);
+		    /* increment the output cursor*/
+		    cursor += thisRead;
+		    /* decrement the number of samples left to process */
+		    thisSize -= thisRead;
+	    }
+	}
 
 	for (unsigned int i = 0; i < framesPerBuffer; i++) {
 		float amplitude = 0;
@@ -156,4 +195,20 @@ double Mixer::getFrequency() {
 void Mixer::setVolume(double vol) {
 	if (vol >= 0.0 && vol <= 1.0)
 		volume = vol;
+}
+
+void Mixer::readFile(const std::string& strFilename) {
+	FILE_NAME = strFilename;
+	readFileBool = !readFileBool;
+
+	if(readFileBool){
+		data = (OurData *)malloc(sizeof(OurData));
+
+		/* initialize our data structure */
+	 	data->position = 0;
+		data->sfInfo.format = 0;
+	  	/* try to open the file */
+	  	data->sndFile = sf_open(FILE_NAME, SFM_READ, &data->sfInfo);
+
+	}  	
 }

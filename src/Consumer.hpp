@@ -1,10 +1,12 @@
 #ifndef LEAPMUSIC_CONSUMER
 #define LEAPMUSIC_CONSUMER
 
+#include "Tutorial.hpp"
 #include "LeapListener.hpp"
 #include "Menu.hpp"
 #include "Sound.hpp"
-#include "Tutorial.hpp"
+
+class Tutorial;
 
 class Consumer{
  public:

@@ -31,11 +31,10 @@ Consumer::Consumer(LeapListener& listen, Sound& sound, Tutorial& tutorial) :
 
 void Consumer::startConsumeLoop() {
 
-	if(tutorial.playTutorial){
-		tutorial.play();
-	}
+	sound.getMixer().readFile2("/Users/Jonas/Documents/git/LeapMusic/src/audio.raw");
 
 	while (true) {
+
 		palmPosition = listener.getPalmPosition();
 
 		sound.getMixer().setVolume((palmPosition.x + 300) / 600);

@@ -16,7 +16,6 @@ int main(int argc, char** argv) {
 	// Create a sample listener and controller
 	Controller controller;
 	Sound sound;
-	std::cout << "lolo" << '\n';
 	LeapListener listener;
 	Tutorial tutorial;
 
